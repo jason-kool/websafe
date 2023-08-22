@@ -1,0 +1,136 @@
+version: "2.19" # Docker Compose version
+services: # The containers that we want to deploy
+
+  
+  insecure_webapp: # name of the container
+    build:
+      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
+      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+    # image: php:8.0-apache
+    ports:
+      - "8000:80" # Mapping port 8000 on our machine to access port 80 on the container
+    depends_on:
+      - insecure_database # Makes it wait for the database container to start before running
+    volumes:
+      - ./insecure_websafe:/var/www/html
+    networks:
+      internal_insecure:
+        ipv4_address: "192.168.20.69"
+
+  insecure_database: 
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
+      - MYSQL_USER=Lottie # They said that this should live in an env variable???
+      - MYSQL_PASSWORD=Ad0r@ble
+      - MYSQL-DATABASE=database_insecure.sql
+    restart: unless-stopped
+    volumes:
+      # - ./insecure_database/mysql:/var/lib/mysql
+      - ./insecure_database/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - internal_insecure
+
+  insecure_phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8001:80"
+    environment:
+      - PMA_ARBITRARY=1 # When true, allows us to specify our own preferred web service and DB
+      - PMA_HOST=insecure_database # Which container is hosting our MySQL Database?
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=w3bs@fe_ADmin 
+      # - PMA_USER=Lottie
+      # - PMA_PASSWORD=Ad0r@ble
+    networks:
+      - internal_insecure
+
+
+  insecure_server1: # name of the container
+    build:
+      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
+      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+    ports:
+      - "8002:80" # Mapping port 8000 on our machine to access port 80 on the container
+    depends_on:
+      - insecure_database # Makes it wait for the database container to start before running
+    volumes:
+      - ./insecure_server1:/var/www/html
+    networks:
+      internal_insecure:
+        ipv4_address: "192.168.20.22"
+
+
+  ##############################################################
+
+  webapp_secure: # name of the container
+    build:
+      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
+      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+    # image: php:8.0-apache
+    ports:
+      - "9000:80" # Mapping port 8000 on our machine to access port 80 on the container
+    depends_on:
+      - secure_database # Makes it wait for the database container to start before running
+    volumes:
+      - ./secure_websafe:/var/www/html
+    networks:
+      internal_secure:
+        ipv4_address: "192.168.40.69"
+
+  secure_database: 
+    image: mysql:latest
+    environment:
+      - MYSQL-DATABASE=websafe
+      - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
+      - MYSQL_USER=Lottie # They said that this should live in an env variable???
+      - MYSQL_PASSWORD=Ad0r@ble
+    restart: unless-stopped
+    volumes:
+      # - ./secure_database/mysql:/var/lib/mysql
+      - ./secure_database/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - internal_secure
+
+  secure_phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "9001:80"
+    environment:
+      - PMA_ARBITRARY=1 # When true, allows us to specify our own preferred web service and DB
+      - PMA_HOST=secure_database # Which container is hosting our MySQL Database?
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=w3bs@fe_ADmin 
+      # - PMA_USER=Lottie
+      # - PMA_PASSWORD=Ad0r@ble
+    networks:
+      - internal_secure
+
+
+  secure_server1: # name of the container
+    build:
+      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
+      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+    ports:
+      - "9002:80" # Mapping port 8000 on our machine to access port 80 on the container
+    depends_on:
+      - secure_database # Makes it wait for the database container to start before running
+    volumes:
+      - ./secure_server1:/var/www/html
+    networks:
+      internal_secure:
+        ipv4_address: "192.168.40.22"
+
+networks:
+  internal_secure:
+    ipam: # IP Address Management 
+      driver: default
+      config:
+        - subnet: "192.168.40.0/24" 
+  internal_insecure:
+    ipam: # IP Address Management 
+      driver: default
+      config:
+        - subnet: "192.168.20.0/24" 

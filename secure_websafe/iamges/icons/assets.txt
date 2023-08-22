@@ -1,0 +1,5 @@
+assets
+
+Cart icon > https://iconmonstr.com/shopping-cart-4-png/
+profile icon > https://iconmonstr.com/user-20-png/
+Comments icon > https://iconmonstr.com/speech-bubble-33-png/

@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
 
-if (!$con) {
-    die("Failed to connect: " . mysqli_connect_errno());
-}
+include "../sql_con.php";
 
 $error = ""; // Variable to store the error message
 
@@ -60,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/sex.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>
@@ -70,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="login_card">
             <h1>LOGIN</h1>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <form method="POST" action=".">
                 <!-- <form method="POST" action="test.php"> -->
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>

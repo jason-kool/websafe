@@ -1,30 +1,13 @@
 <?php
-// CWE-613: Insufficient Session Expiration (Secure Version)
-$timeout = 300;
-ini_set("session.gc_maxlifetime", $timeout);
-ini_set("session.cookie_lifetime", $timeout);
-session_start();
-$s_name = session_name();
-if (isset($_COOKIE[$s_name])) {
-    setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
-} else {
-    if (session_destroy()) {
-        echo "
-            <script>
-                alert('Sorry, you have been inactive for too long. Please log in again.');
-                window.location.href='login.php';
-            </script>";
-    }
-}
+include "../../init-timeout.php";
+include "../../init-error.php";
 
 if (isset($_SESSION["user_id"])) {
     header("Location: index.php");
     exit();
 }
 
-// CWE-209: Generation of Error Message Containing Sensitive Information
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
+
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -47,10 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function isOTPValid($email, $otp)
 {
-    $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
-    if (!$con) {
-        die("Failed to connect: " . mysqli_connect_errno());
-    }
+    include "../../sql_con.php";
 
     $query = $con->prepare("SELECT * FROM `otp_requests` WHERE `email` = ? AND `otp` = ? AND `created_at` >= NOW() - INTERVAL 10 MINUTE");
     $query->bind_param('ss', $email, $otp);
@@ -68,7 +48,7 @@ function isOTPValid($email, $otp)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification</title>
-    <link rel="stylesheet" type="text/css" href="/sex.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>

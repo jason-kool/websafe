@@ -5,7 +5,7 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: ../");
 }
 
-include "../sql_con.php";
+$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
 
 
 $errorMsg = "";
@@ -18,6 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newEmail = $_POST["email"];
     $oldPassword = $_POST["oldPassword"];
 
+    // CWE-261: Weak Encoding for Password (Secure Version)
+    $timeTarget = 0.05;
+    $cost = 8; // minimum number of operations necessary to compute the password hash
+    do {
+        $cost++;
+        $start = microtime(true);
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT, ["cost" => $cost]); // salted hash function (salt is randomly generated)
+        $end = microtime(true);
+    } while (($end - $start) < $timeTarget); // as long as the code has been running for less than 50 milliseconds, the cost increases by one
+
     $verificationQuery = $con->prepare("SELECT password FROM `users` WHERE user_id = ?");
     $verificationQuery->bind_param('i', $userId);
     $verificationQuery->execute();
@@ -25,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $verificationQuery->fetch();
     $verificationQuery->close();
 
-    if ($setPassword == $oldPassword) {
+    if (password_verify($oldPassword, $setPassword)) {
         // Check if the new username is unique
         $checkUsernameQuery = $con->prepare("SELECT * FROM `users` WHERE `username` = ? AND `user_id` != ?");
         $checkUsernameQuery->bind_param('si', $newUsername, $userId);
@@ -49,28 +59,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $updateNameQuery->bind_param('si', $newUsername, $userId);
                 $updateNameQuery->execute();
                 $updateNameQuery->close();
-                $updateUsername = "Username has been updated";
-            } elseif (!empty($newUsername)) {
-                $updateUsername = "ONLY ALPHABETS, NUMBERS AND UNDERSCORES";
-            }
-
-            if ($newPassword !== "") {
-                $updatePasswordQuery = $con->prepare("UPDATE `users` SET `password` = ? WHERE `user_id` = ?");
-                $updatePasswordQuery->bind_param('si', $newPassword, $userId);
-                $updatePasswordQuery->execute();
-                $updatePasswordQuery->close();
-                $updatePassword = "Password has been updated";
-            } elseif (!empty($newPassword)) {
-                $updatePassword = "AT LEAST 8 CHARACTERS, CAPITAL LETTER AND SMALL LETTER";
-            }
-            if ($newEmail !== "") {
-                $updateEmailQuery = $con->prepare("UPDATE `users` SET `email` = ? WHERE `user_id` = ?");
-                $updateEmailQuery->bind_param('si', $newEmail, $userId);
-                $updateEmailQuery->execute();
-                $updateEmailQuery->close();
-                $updateEmail = "Email has been updated";
-            } elseif (!empty($newEmail)) {
-                $updateEmail = "ENSURE EMAIL IS PROPERLY FORMATTED";
+                $profileUpdated = true;
+                if ($newPassword !== "") {
+                    $updatePasswordQuery = $con->prepare("UPDATE `users` SET `password` = ? WHERE `user_id` = ?");
+                    $updatePasswordQuery->bind_param('si', $hashedPassword, $userId);
+                    $updatePasswordQuery->execute();
+                    $updatePasswordQuery->close();
+                    $profileUpdated = true;
+                    if ($newEmail !== "") {
+                        $updateEmailQuery = $con->prepare("UPDATE `users` SET `email` = ? WHERE `user_id` = ?");
+                        $updateEmailQuery->bind_param('si', $newEmail, $userId);
+                        $updateEmailQuery->execute();
+                        $updateEmailQuery->close();
+                        $profileUpdated = true;
+                    }
+                }
             }
         }
     } else {
@@ -120,7 +123,7 @@ $con->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>
@@ -140,68 +143,40 @@ $con->close();
                 }
                 ?>
             </div>
-            <form class="profile_form" method="POST" action="."
-                enctype="multipart/form-data">
+            <form class="profile_form" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
                 <table>
                     <tbody>
                         <tr>
                             <td>
                                 <div>
-                                    <label for="username">Username:
-                                        <?php
-                                        if (!empty($updateUsername)) {
-                                            echo '<span align="center" class="success">' . $updateUsername . '</span>';
-                                        }
-                                        ?>
-                                    </label>
+                                    <label for="username">Username:</label>
                                     <br>
-                                    <input style="border-radius: 7px;" type="text" id="username" name="username"
-                                        value="<?php echo $username; ?>">
+                                    <input style="border-radius: 7px;" type="text" id="username" name="username" value="<?php echo $username; ?>" required>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div>
-                                    <label for="password">Change Password:
-                                        <?php
-                                        if (!empty($updatePassword)) {
-                                            echo '<span align="center" class="success">' . $updatePassword . '</span>';
-                                        }
-                                        ?>
-                                    </label>
+                                    <label for="password">Password:</label>
                                     <br>
-                                    <input style="border-radius: 7px;" type="password" id="password" name="password"
-                                        placeholder="New Password">
+                                    <input style="border-radius: 7px;" type="password" id="password" name="password" placeholder="Password" required>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div>
-                                    <label for="email">Email:
-                                        <?php
-                                        if (!empty($updateEmail)) {
-                                            echo '<span align="center" class="success">' . $updateEmail . '</span>';
-                                        }
-                                        ?>
-                                    </label>
+                                    <label for="email">Email:</label>
                                     <br>
-                                    <input style="border-radius: 7px;" type="email" id="email" name="email"
-                                        value="<?php echo $email; ?>">
+                                    <input style="border-radius: 7px;" type="email" id="email" name="email" value="<?php echo $email; ?>" required>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div>
-                                    <label for="profile_picture">Profile Picture:
-                                        <?php
-                                        if (!empty($updatePic)) {
-                                            echo '<span align="center" class="success">' . $updatePic . '</span>';
-                                        }
-                                        ?>
-                                    </label>
+                                    <label for="profile_picture">Profile Picture:</label>
                                     <br>
                                     <input type="file" id="profile_picture" name="profile_picture">
                                 </div>
@@ -212,8 +187,7 @@ $con->close();
                                 <div>
                                     <label for="oldPassword"> Password verification: </label>
                                     <br>
-                                    <input style="border-radius: 7px;" type="password" id="oldPassword"
-                                        name="oldPassword" placeholder="Old Password" required>
+                                    <input style="border-radius: 7px;" type="password" id="oldPassword" name="oldPassword" placeholder="Old Password" required>
                                 </div>
                             </td>
                         </tr>

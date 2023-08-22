@@ -1,5 +1,8 @@
 <?php
 session_start();
+include "../init-timeout.php";
+include "../init-error.php";
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
 }
@@ -10,8 +13,8 @@ if (!isset($_SESSION["user_id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" type="text/css" href="../sex.css">
+    <title>Cart</title>
+    <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>

@@ -17,8 +17,8 @@ if ($_SESSION["privilege"] != "admin"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/sex.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/design.css">
+    <title>Admin</title>
 </head>
 <body>
     

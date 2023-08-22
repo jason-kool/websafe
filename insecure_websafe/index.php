@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "./sql_con.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +8,8 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helpme</title>
-    <link rel="stylesheet" type="text/css" href="./sex.css">
+    <title>Websafe shop</title>
+    <link rel="stylesheet" type="text/css" href="./design.css">
 </head>
 
 <body>
@@ -17,20 +18,12 @@ session_start();
 
     <?php
 
-    $con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
-
-
-
-    if (!$con) {
-        die("Failed to connect " . mysqli_connect_errno());
-    }
-
     function getAllProducts()
     {
         global $con;
         $query = $con->prepare("SELECT * FROM `products`");
         // SELECT everything FROM a table called `products`
-    
+
         if ($query->execute()) {
             $query->bind_result($product_id, $name, $price, $picture, $description);
             $query->store_result();
@@ -122,7 +115,7 @@ session_start();
         // Add click event listeners to each cell
         var cells = document.getElementsByClassName("cell");
         for (var i = 0; i < cells.length; i++) {
-            cells[i].addEventListener("click", function () {
+            cells[i].addEventListener("click", function() {
                 // Get the product details from the clicked cell
                 var productName = this.querySelector("h2").textContent;
                 var productImage = this.querySelector("img").src;
@@ -137,8 +130,18 @@ session_start();
                 productPricePlaceholder.textContent = productPrice;
 
                 // Add click event listener to the "Add to Cart" button
-                addToCartButton.addEventListener("click", function () {
+                addToCartButton.addEventListener("click", function() {
                     location.href = "sessionCart.php?product_id=" + productId;
+                });
+
+                // Add click event listener to the "Add to Cart" button
+                addToCartButton.addEventListener("click", function() {
+                    <?php if (isset($_SESSION["user_id"])) { ?>
+                        location.href = "/cart/addtoCart.php?product_id=" + productId;
+                    <?php } else { ?>
+                        alert("Please log in before adding to cart.");
+                        location.href = "/login/";
+                    <?php } ?>
                 });
 
                 // Display the modal
@@ -147,12 +150,12 @@ session_start();
         }
 
         // Close the modal when the user clicks on the close button
-        closeBtn.addEventListener("click", function () {
+        closeBtn.addEventListener("click", function() {
             modal.style.display = "none";
         });
 
         // Close the modal when the user clicks outside of it
-        window.addEventListener("click", function (event) {
+        window.addEventListener("click", function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }

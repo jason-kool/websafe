@@ -30,6 +30,7 @@ function create_product() {
     // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
+        // include "../sql_con.php";
         $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
         if (!$con) {
             die("Error connecting to database: " .  mysqli_connect_errno());
@@ -65,6 +66,7 @@ function update_product() {
         
     }
 
+    // include "../sql_con.php";
     $con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
     if (!$con) {
         die("Error connecting to database: " . mysqli_connect_errno());
@@ -161,11 +163,7 @@ function delete_product() {
         $idToDelete = $_GET["id"];
     
     
-    
-        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
-        if (!$con) {
-            die("Error connecting to database: " . mysqli_connect_errno());
-        }
+        include "../sql_con.php";
     
         $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
         $checkQuery->bind_param("i",$idToDelete);
@@ -213,8 +211,8 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/sex.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/design.css">
+    <title>Manage Products</title>
 </head>
 
 <body>

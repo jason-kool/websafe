@@ -1,20 +1,6 @@
 <?php
-$timeout = 300;
-ini_set("session.gc_maxlifetime", $timeout);
-ini_set("session.cookie_lifetime", $timeout);
-session_start();
-$s_name = session_name();
-if (isset($_COOKIE[$s_name])) {
-  setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
-} else {
-  if (session_destroy()) {
-    echo "
-            <script>
-                alert('Sorry, you have been inactive for too long. Please log in again.');
-                window.location.href='/login';
-            </script>";
-  }
-}
+include "../../init-timeout.php";
+include "../../init-error.php";
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
@@ -24,10 +10,6 @@ if ($_SESSION["privilege"] != "admin"){
     header("Location: /");
 }
 
-// CWE-209: Generation of Error Message Containing Sensitive Information
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
-
 ?>
 
 <!DOCTYPE html>
@@ -35,8 +17,8 @@ ini_set('display_errors', 0);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/sex.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/design.css">
+    <title>Admin</title>
 </head>
 <body>
     

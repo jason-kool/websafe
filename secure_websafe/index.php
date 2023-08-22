@@ -1,22 +1,6 @@
 <?php
-$timeout = 300; // timeout after five minutes
-ini_set("session.gc_maxlifetime", $timeout);
-ini_set("session.cookie_lifetime", $timeout);
-
-session_start();
-// Create a session that times out after five minutess
-$s_name = session_name();
-if (isset($_COOKIE[$s_name])) {
-    setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
-} else {
-    if (session_destroy()) {
-        echo "
-            <script>
-                alert('Sorry, you have been inactive for too long. Please log in again.');
-                window.location.href='/';
-            </script>";
-    }
-}
+include "./init-timeout.php";
+include "./init-error.php"
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +8,7 @@ if (isset($_COOKIE[$s_name])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helpme</title>
+    <title>Websafe shop</title>
     <link rel="stylesheet" type="text/css" href="./sex.css">
 </head>
 
@@ -34,11 +18,9 @@ if (isset($_COOKIE[$s_name])) {
 
     <?php
 
+    // include "./sql_con.php";
     $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 
-    // CWE-209: Generation of Error Message Containing Sensitive Information
-    error_reporting(E_ERROR | E_PARSE);
-    ini_set('display_errors', 0);
     if (!$con) {
         die("Failed to connect " . mysqli_connect_errno());
     }
@@ -48,7 +30,7 @@ if (isset($_COOKIE[$s_name])) {
         global $con;
         $query = $con->prepare("SELECT * FROM `products`");
         // SELECT everything FROM a table called `products`
-    
+
         if ($query->execute()) {
             $query->bind_result($product_id, $name, $price, $picture, $description);
             $query->store_result();
@@ -61,7 +43,6 @@ if (isset($_COOKIE[$s_name])) {
                 }
 
                 echo '</div></div></div></div>';
-
             }
         } else {
             echo "Error executing query.";
@@ -134,10 +115,12 @@ if (isset($_COOKIE[$s_name])) {
         var productPricePlaceholder = document.getElementById("product-price");
         var addToCartButton = document.querySelector(".add-to-cart-btn");
 
+
+
         // Add click event listeners to each cell
         var cells = document.getElementsByClassName("cell");
         for (var i = 0; i < cells.length; i++) {
-            cells[i].addEventListener("click", function () {
+            cells[i].addEventListener("click", function() {
                 // Get the product details from the clicked cell
                 var productName = this.querySelector("h2").textContent;
                 var productImage = this.querySelector("img").src;
@@ -152,8 +135,18 @@ if (isset($_COOKIE[$s_name])) {
                 productPricePlaceholder.textContent = productPrice;
 
                 // Add click event listener to the "Add to Cart" button
-                addToCartButton.addEventListener("click", function () {
-                    location.href = "sessionCart.php?product_id=" + productId;
+                // addToCartButton.addEventListener("click", function() {
+                    // location.href = "sessionCart.php?product_id=" + productId;
+                // });
+
+                // Add click event listener to the "Add to Cart" button
+                addToCartButton.addEventListener("click", function() {
+                    <?php if (isset($_SESSION["user_id"])) { ?>
+                        location.href = "/cart/addtoCart.php?product_id=" + productId;
+                    <?php } else { ?>
+                        alert("Please log in before adding to cart.");
+                        location.href = "/login/";
+                    <?php } ?>
                 });
 
                 // Display the modal
@@ -162,12 +155,12 @@ if (isset($_COOKIE[$s_name])) {
         }
 
         // Close the modal when the user clicks on the close button
-        closeBtn.addEventListener("click", function () {
+        closeBtn.addEventListener("click", function() {
             modal.style.display = "none";
         });
 
         // Close the modal when the user clicks outside of it
-        window.addEventListener("click", function (event) {
+        window.addEventListener("click", function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }

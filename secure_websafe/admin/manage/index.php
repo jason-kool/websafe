@@ -1,20 +1,6 @@
 <?php
-$timeout = 300;
-ini_set("session.gc_maxlifetime", $timeout);
-ini_set("session.cookie_lifetime", $timeout);
-session_start();
-$s_name = session_name();
-if (isset($_COOKIE[$s_name])) {
-  setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
-} else {
-  if (session_destroy()) {
-    echo "
-            <script>
-                alert('Sorry, you have been inactive for too long. Please log in again.');
-                window.location.href='/login';
-            </script>";
-  }
-}
+include "../../init-timeout.php";
+
 if (!isset($_SESSION["user_id"])) {
   header("Location: /");
 }
@@ -22,11 +8,13 @@ if ($_SESSION["privilege"] != "admin"){
     header("Location: /");
 }
 
-// CWE-209: Generation of Error Message Containing Sensitive Information
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
+include "../../init-error.php";
+
+include "../../sql_con.php";
 
 function create_product() {
+
+
     // moving POST arguments into variables
     $productName = $_POST["name"];
     $specialCharName = htmlspecialchars($productName);
@@ -50,11 +38,7 @@ function create_product() {
     // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
-        $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
-        if (!$con) {
-            die("Error connecting to database: " .  mysqli_connect_errno());
-        } 
-
+        global $con;
         // if (isset($_POST["create_product"])) {
         if (isset($_POST["form_action"]) && $_POST["form_action"] == "create") {
             $query = $con->prepare("INSERT INTO `products` (`name`,`price`,`picture`,`description`) VALUES (?,?,?,?)");
@@ -85,11 +69,7 @@ function update_product() {
         
     }
 
-    $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
-    if (!$con) {
-        die("Error connecting to database: " . mysqli_connect_errno());
-    }
-
+    global $con;
     // check if the product with the specified ID exists
     $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
     $checkQuery->bind_param("i",$idToUpdate);
@@ -180,12 +160,7 @@ function delete_product() {
         // $idToDelete = $_POST["id"];
         $idToDelete = $_GET["id"];
     
-    
-    
-        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
-        if (!$con) {
-            die("Error connecting to database: " . mysqli_connect_errno());
-        }
+        global $con;
     
         $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
         $checkQuery->bind_param("i",$idToDelete);
@@ -233,8 +208,8 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/sex.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="/design.css">
+    <title>Manage Products</title>
 </head>
 
 <body>
@@ -254,11 +229,7 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
     <div class="admincontainer">
 
         <?php
-            $con = mysqli_connect("database","root", "w3bs@fe_ADmin", "websafe");
-
-            if (!$con) {
-                die("Failed to connect " . mysqli_connect_errno());
-            }
+            include "../../sql_con.php";
 
             $query = $con->prepare("SELECT * FROM `products`");
             // SELECT everything FROM a table called `products`

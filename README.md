@@ -1,15 +1,15 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `13 AUGUST 2023, 12:27am`
-## VERSION: vC1.1
+## COMMIT DATE: `15 AUGUST 2023, 23:33pm`
+## VERSION: vC1.2
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
 
-This is no longer broken, and automatically imports the sql dump to the database, so no prior setup using PHPmyadmin is needed.
+The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
 
 
 ### Websafe site
-I originally wanted to make things """""efficient""""" by making some things into files that can be imported using the "include" function but fuck it, I'll do that another time.\
+I did the thing where it makes things """""efficient""""" by turning the error reporting, session timeout and SQL connection codes into their own files so they can be imported on the fly. Never tested if it works seamlessly tho lmao\
 ***SECURE SITE DOES NOT HAVE SSRF SECURITY MEASURES IN PLACE***
 
 ### External server
@@ -51,7 +51,14 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
-## v2.2C1.0 -> vC1.0
+## vC1.2 -> vC1.2
+> - Made the **SQL con**, **error reporting** and **session timeout** functions into their own PHP pages, and replaced all the existing code on (almost) all pages to `include()` them. (Haven't testing if anything is broken tho)
+> - Changed Document Titles for all webpages so they actually reflect what the page is about instead of just "helpme" or "Document"
+> - Renamed the stylesheet file to `design.css`, and updated all pages accordingly  
+> - Removed non-logged-in-kickout functions on `INSECURE/cart/cart.php` and `INSECURE/cart/index.php`
+> - Changed the modals on the main page so that when a user clicks on the "Add to cart" button while not logged in, it will create an alert and redirect the user to the login page
+
+## v2.2C1.0 -> vC1.1
 > - Made it so that sql dumps for secure and insecure are automatically imported into the database upon container start
 > - Changed "lottie" to "Lottie" so nothing else would break because of one stupid inconsistency
 > - Disabled database consistency by commenting out the "mysql" volumn in the compose files (both secure and insecure variants)

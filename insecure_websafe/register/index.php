@@ -3,11 +3,7 @@ session_start();
 
 if (isset($_POST["form_submit"])) {
     $error = "";
-    $con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
-    
-    if (!$con) {
-        die("Failed to connect: " . mysqli_connect_errno());
-    }
+    include "../sql_con.php";
 
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -54,7 +50,7 @@ if (isset($_POST["form_submit"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" href="/sex.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>

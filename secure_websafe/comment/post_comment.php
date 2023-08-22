@@ -2,16 +2,10 @@
 session_start();
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
-  }
-  // CWE-209: Generation of Error Message Containing Sensitive Information
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
-
-$con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
-
-if (!$con) {
-    die("Failed to connect " . mysqli_connect_errno());
 }
+include "../init-error.php";
+
+include "../sql_con.php";
 
 if (isset($_POST["form_submit"])) {
     // Page is loaded because of a form
@@ -28,13 +22,10 @@ if (isset($_POST["form_submit"])) {
     } else {
         echo "Error executing query.";
     }
-    
+
     $con->close();
-    
 } else {
     // Page is manually loaded without a form (unauthorized access)
     $con->close();
     header("Location: /comment");
 }
-
-?>

@@ -9,10 +9,7 @@ if ($_SESSION["privilege"] != "admin"){
   header("Location: /");
 }
 
-$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
-if (!$con) {
-  die("Failed to connect: " . mysqli_connect_errno());
-}
+include "../sql_con.php";
 
 function getAllLogs()
 {
@@ -31,8 +28,8 @@ function getAllLogs()
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helpme</title>
-  <link rel="stylesheet" type="text/css" href="/sex.css">
+  <title>Audit Logs</title>
+  <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>
@@ -43,7 +40,7 @@ function getAllLogs()
 
   <div>
     <table>
-      <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
+      <form action="." method="post">
         <input id="logsearchbar" type="text" id="navbar_search" name="search_query" placeholder="Log search"></input>
         <button class="logsearchbutton" type="submit">Search</button>
       </form>

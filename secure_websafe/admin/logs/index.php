@@ -1,20 +1,6 @@
 <?php
-$timeout = 300;
-ini_set("session.gc_maxlifetime", $timeout);
-ini_set("session.cookie_lifetime", $timeout);
-session_start();
-$s_name = session_name();
-if (isset($_COOKIE[$s_name])) {
-  setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
-} else {
-  if (session_destroy()) {
-    echo "
-            <script>
-                alert('Sorry, you have been inactive for too long. Please log in again.');
-                window.location.href='login.php';
-            </script>";
-  }
-}
+include "../../init-timeout.php";
+include "../../init-error.php";
 
 if (!isset($_SESSION["user_id"])) {
   header("Location: /");
@@ -24,14 +10,7 @@ if ($_SESSION["privilege"] != "admin"){
   header("Location: /");
 }
 
-// CWE-209: Generation of Error Message Containing Sensitive Information
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
-
-$con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
-if (!$con) {
-  die("Failed to connect: " . mysqli_connect_errno());
-}
+include "../../sql_con.php";
 
 function getAllLogs()
 {
@@ -50,8 +29,8 @@ function getAllLogs()
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helpme</title>
-  <link rel="stylesheet" type="text/css" href="/sex.css">
+  <title>Audit Logs</title>
+  <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>
@@ -62,7 +41,7 @@ function getAllLogs()
 
   <div>
     <table>
-      <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
+      <form action="." method="post">
         <input id="logsearchbar" type="text" id="navbar_search" name="search_query" placeholder="Log search"></input>
         <button class="logsearchbutton" type="submit">Search</button>
       </form>

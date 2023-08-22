@@ -1,11 +1,7 @@
 <?php
 session_start();
 //non secure update password
-$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");;
-
-if (!$con) {
-    die("Failed to connect: " . mysqli_connect_errno());
-}
+include "../../sql_con.php";
 
 $error = "";
 
@@ -47,7 +43,7 @@ $con->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
-    <link rel="stylesheet" type="text/css" href="/sex.css">
+    <link rel="stylesheet" type="text/css" href="/design.css">
 </head>
 
 <body>
@@ -58,7 +54,7 @@ $con->close();
     <div class="container">
         <div class="login_card">
             <h1>RESET YOUR PASSWORD</h1>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <form method="POST" action=".">
                 <input type="email" placeholder="Email" name="email" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Reset Password" class="button" name="form_submit">

@@ -1,8 +1,13 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `11 AUGUST 2023, 12:05am`
-## VERSION: vC1.0
+## COMMIT DATE: `13 AUGUST 2023, 12:27am`
+## VERSION: vC1.0FUCK
+
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
+
+
+# THIS IS BROKEN
+## THEY CAN'T RESOLVE TO ACCESS THE DATABASE AND I NEED TO MANUALLY CHANGE THE $con VARIABLE FOR EVERYFUCKINGPAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 
 ### Websafe site
@@ -26,11 +31,16 @@ SECURE VARIANT
 ```
 
 ## CONTAINER NETWORKING CHART 
-This chart is applicable to both variants of the site.
 ```
-Network address: 192.168.42.0/24
-Websafe Web Application: 192.168.42.69
-External Server: 192.168.42.22
+INSECURE VARIANT
+Network address: 192.168.20.0/24
+Websafe Web Application: 192.168.20.69
+External Server: 192.168.20.22
+
+SECURE VARIANT
+Network address: 192.168.40.0/24
+Websafe Web Application: 192.168.40.69
+External Server: 192.168.40.22
 ```
 
 

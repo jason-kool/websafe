@@ -33,7 +33,7 @@ include "./init-error.php"
             while ($query->fetch()) {
                 echo '<div class="cell" data-product-id="' . $product_id . '"  data-description="' . $description . '"><div class="product"><img src="./productimages/' . $picture . '" alt="Image of ' . $name . '"><div class="product-details"><h2>' . $name . '</h2><p>$' . $price . '</p><br>';
 
-                if (isset($_SESSION["user_id"])) {
+                if (isset($_SESSION["user_id"]) && $_SESSION["privilege"] == "user") {
                     echo '<a href="/cart/addtoCart.php?product_id=' . $product_id . '" class="cell-btn">Add to cart</a>';
                 }
 
@@ -60,7 +60,7 @@ include "./init-error.php"
                     while ($query->fetch()) {
                         echo '<div class="cell" data-product-id="' . $product_id . '"  data-description="' . $description . '"><div class="product"><img src="./productimages/' . $picture . '" alt="Image of ' . $name . '"><div class="product-details"><h2>' . $name . '</h2><p>$' . $price . '</p><br>';
 
-                        if (isset($_SESSION["user_id"])) {
+                        if (isset($_SESSION["user_id"]) && $_SESSION["privilege"] == "user") {
                             echo '<a href="/cart/addtoCart.php?product_id=' . $product_id . '" class="cell-btn">Add to cart</a>';
                         }
 

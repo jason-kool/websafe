@@ -1,11 +1,16 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `20 AUGUST 2023, 11:37pm`
-## VERSION: vC1.6
+## COMMIT DATE: `21 AUGUST 2023, 17:17pm`
+## VERSION: vC1.7
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
 
 The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
+
+TODO LIST:
+- [x] Make it so that cart doesn't exist for admins
+- [ ] Make `SECURE/index` and `INSECURE/index` responsive so that \
+ the "add to cart" button in the modal redirects to the manage page if the user is an admin
 
 ### Websafe site
 I did the thing where it makes things """""efficient""""" by turning the error reporting, session timeout and SQL connection codes into their own files so they can be imported on the fly. Never tested if it works seamlessly tho lmao\
@@ -49,6 +54,14 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.6 -> vC1.7
+> - Fixed a bug where logging in on the *secure* site would not set the user's privilege in cookies.
+> - Fixed a bug on the *secure* site where a user cant access the cart page.
+> - Fixed a flaw where `SECURE/login` failed to properly encrypt UID. 
+> - Fixed a bug where `SECURE/index.php` would fail to add products to cart.
+> - Fixed bugs where functions in `SECURE/cart/*` failed to work. 
+> - Fixed a bug where `SECURE/logout` failed to flush session storage.
+
 ## vC1.5 -> vC1.6
 > - Edited `INSECURE/profile` to authenticate and store passwords in base64 encoding instead of plaintext.
 > - Edited the login function in `SECURE/login` to encrypt the user privilege

@@ -1,9 +1,9 @@
 <?php
+session_start();
+include "../init-error.php";
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
 }
-session_start();
-include "../init-error.php";
 
 // Check if the user is logged in
 if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
@@ -17,18 +17,16 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
     $logquery->bind_param('ssss', $logName, $logRole, $date, $logActivity);
     if ($logquery->execute()) {
         $con->close();
-    // Unset all of the session variables
-    $_SESSION = array();
+        // Unset all of the session variables
+        $_SESSION = array();
 
-    // Destroy the session
-    session_destroy();
+        // Destroy the session
+        session_destroy();
     }
-    echo "<script>
-    sessionStorage.clear();
-    window.location.href='/';
-    </script>";
-
     setcookie("privilege", "", 0, "/");
+    echo "<script>sessionStorage.clear()</script>";
+    echo "<script>window.location.href='/'</script>";
+
 }
 exit();
 ?>

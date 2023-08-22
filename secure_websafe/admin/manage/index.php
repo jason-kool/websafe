@@ -224,7 +224,7 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
         $encryption_key = $_SESSION['encryptionKey'];
         $options = OPENSSL_RAW_DATA;
         $encryption_iv = $_SESSION['encryptionIv'];
-        $tag = $_SESSION['authenticationTag'];
+        $tag = $_SESSION['authenticationTagPRIV'];
         // CWE-315: Cleartext Storage of Sensitive Information in Cookies
         $decoded_priv = base64_decode($_COOKIE["privilege"]);
         $decrypted_priv = openssl_decrypt($decoded_priv, $ciphering, $encryption_key, $options, $encryption_iv, $tag);

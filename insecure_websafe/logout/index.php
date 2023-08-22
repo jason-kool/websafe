@@ -30,10 +30,8 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
         // THIS COOKIE IS USED ONLY FOR /admin/manage AND NOWHERE ELSE
 
     }
-    echo "<script>
-    sessionStorage.clear();
-    window.location.href='/';
-    </script>";
+    echo "<script>sessionStorage.clear()</script>";
+    echo "<script>window.location.href='/'</script>";
 }
 exit();
 ?>

@@ -12,6 +12,7 @@ include "../sql_con.php";
 
 <?php
 if (isset($_POST['UID'])) {
+
     // CWE-315: Cleartext Storage of Sensitive Information in Cookies
     $user_id = $_POST["UID"];
     $ciphering = "AES-256-GCM";
@@ -19,7 +20,7 @@ if (isset($_POST['UID'])) {
     $encryption_key = $_SESSION['encryptionKey'];
     $options = OPENSSL_RAW_DATA;
     $encryption_iv = $_SESSION['encryptionIv'];
-    $tag = $_SESSION['authenticationTag'];
+    $tag = $_SESSION['authenticationTagID'];
 
     $decodedID = base64_decode($user_id);
     $decryptedID = openssl_decrypt($decodedID, $ciphering, $encryption_key, $options, $encryption_iv, $tag);

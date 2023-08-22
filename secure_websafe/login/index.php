@@ -59,23 +59,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $options = OPENSSL_RAW_DATA;
                 
                 // encrypting the UID value
-                $encryption = openssl_encrypt($user["user_id"], $ciphering, $encryption_key, $options, $encryption_iv, $tag); // Include the $tag variable to store the authentication tag
+                $encryption = openssl_encrypt($user["user_id"], $ciphering, $encryption_key, $options, $encryption_iv, $tagID); // Include the $tag variable to store the authentication tag
                 $encryptedID = base64_encode($encryption);
                 
                 // encrypting the privilege value
-                $encryption_priv = openssl_encrypt($user["privilege"], $ciphering, $encryption_key, $options, $encryption_iv, $tag); 
+                $encryption_priv = openssl_encrypt($user["privilege"], $ciphering, $encryption_key, $options, $encryption_iv, $tagPRIV); 
                 $encrypted_priv = base64_encode($encryption_priv);
 
                 $_SESSION['encryptionKey'] = $encryption_key;
                 $_SESSION['encryptionIv'] = $encryption_iv;
-                $_SESSION['authenticationTag'] = $tag;
+                $_SESSION['authenticationTagID'] = $tagID;
+                $_SESSION['authenticationTagPRIV'] = $tagPRIV;
                 $_SESSION["user_id"] = $user["user_id"];
                 $_SESSION["username"] = $user["username"];
                 $_SESSION["privilege"] = $user["privilege"];
                 setcookie("privilege", $encrypted_priv, 0, "/");
+
+                $_SESSION["iwantdie"] = $encryptedID;
+                
                 echo '<script>sessionStorage.setItem("UID", "' . $encryptedID . '");</script>'; //stores encrypted UID of the user in the sessionstorage
-
-
                 
                 date_default_timezone_set('Singapore');
                 $date = date('y-m-d h:i:s');

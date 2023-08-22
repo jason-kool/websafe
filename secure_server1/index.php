@@ -7,7 +7,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/sex.css">
-    <title>Document</title>
+    <title>Manage Users</title>
 </head>
 <body>
     <div id="navbar"><h1>Websafe external user management</h1></div>
@@ -37,7 +37,7 @@ session_start();
                 $close = "</td>";
                 
                 while ($query->fetch()) {
-                    echo '<tr><td>'.$userid.'</td><td>'.$username.'</td><td>'.$password.'</td><td>'.$email.'</td><td>'.$profilepic.'</td><td>'.$privilege.'</td><td><a href="deleteUser.php?user_id='.$userid.'">Delete</a></td></tr>';
+                    echo '<tr><td>'.$userid.'</td><td>'.$username.'</td><td>'.$password.'</td><td>'.$email.'</td><td>'.$profilepic.'</td><td>'.$privilege.'</td><td><a href="deleteUser.php?user_id='.$userid.'">Delete</a></td><td><a href="toggleAdmin.php?user_id='.$userid.'&priv='.$privilege.'">Toggle admin</a></td></tr>';
                 }
 
                 echo '</tbody></table>';

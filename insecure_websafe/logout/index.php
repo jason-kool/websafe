@@ -2,7 +2,7 @@
 session_start(); // Start the session
 
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../index.php");
+    header("Location: ../");
 }
 
 // Check if the user is logged in

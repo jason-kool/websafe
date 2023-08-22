@@ -1,22 +1,17 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `21 AUGUST 2023, 17:17pm`
-## VERSION: vC1.7
+## COMMIT DATE: `22 AUGUST 2023, 12:06am`
+## VERSION: vC1.8
 
-This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
-I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
+This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file.
 
 The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
 
-TODO LIST:
-- [x] Make it so that cart doesn't exist for admins
-- [ ] Make `SECURE/index` and `INSECURE/index` responsive so that \
- the "add to cart" button in the modal redirects to the manage page if the user is an admin
 
 ### Websafe site
-I did the thing where it makes things """""efficient""""" by turning the error reporting, session timeout and SQL connection codes into their own files so they can be imported on the fly. Never tested if it works seamlessly tho lmao\
+The website should be done, and there are no forseeable changes to be made.
 
 ### External server
-The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao\
+The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao
 
 ## PORT MAPPING CHART
 ```
@@ -54,6 +49,12 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.7 -> vC1.8
+> - Changed `SECURE/index.php` and `INSECURE/index.php` to not show "add to cart" if the logged in user is an admin.
+> - Updated document name for `SECURE_SERVER/index.php` to "Manage Users" instead of "Documnet".
+> - Created a new "toggle admin" function for both insecure and secure external servers.
+> - Updated `SECURE/index.php` and `INSECURE/index.php` to reflect this change.
+
 ## vC1.6 -> vC1.7
 > - Fixed a bug where logging in on the *secure* site would not set the user's privilege in cookies.
 > - Fixed a bug on the *secure* site where a user cant access the cart page.

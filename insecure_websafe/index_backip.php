@@ -31,7 +31,7 @@ include "./sql_con.php";
             while ($query->fetch()) {
                 echo '<div class="cell" data-product-id="' . $product_id . '"  data-description="' . $description . '"><div class="product"><img src="./productimages/' . $picture . '" alt="Image of ' . $name . '"><div class="product-details"><h2>' . $name . '</h2><p>$' . $price . '</p><br>';
 
-                if (isset($_SESSION["user_id"]) && $_SESSION["privilege"] == "user") {
+                if (isset($_SESSION["user_id"])) {
                     echo '<a href="/cart/addtoCart.php?product_id=' . $product_id . '" class="cell-btn">Add to cart</a>';
                 }
 
@@ -130,26 +130,19 @@ include "./sql_con.php";
                 productDescriptionPlaceholder.textContent = this.getAttribute("data-description");
                 productPricePlaceholder.textContent = productPrice;
 
-                // Check if the user is an admin
-                var isAdmin = <?php echo json_encode($_SESSION["privilege"] === "admin"); ?>;
-                if (isAdmin) {
-                    addToCartButton.textContent = "Edit Product";
-                } else {
-                    addToCartButton.textContent = "Add to Cart";
-                }
+                // Add click event listener to the "Add to Cart" button
+                addToCartButton.addEventListener("click", function() {
+                    location.href = "sessionCart.php?product_id=" + productId;
+                });
 
                 // Add click event listener to the "Add to Cart" button
                 addToCartButton.addEventListener("click", function() {
-                if (isAdmin) {
-                    location.href = "/admin/manage";
-                } else {
                     <?php if (isset($_SESSION["user_id"])) { ?>
                         location.href = "/cart/addtoCart.php?product_id=" + productId;
                     <?php } else { ?>
                         alert("Please log in before adding to cart.");
                         location.href = "/login/";
                     <?php } ?>
-                }
                 });
 
                 // Display the modal

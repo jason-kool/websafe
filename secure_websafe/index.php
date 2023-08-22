@@ -129,14 +129,26 @@ include "./init-error.php"
                 productDescriptionPlaceholder.textContent = this.getAttribute("data-description");
                 productPricePlaceholder.textContent = productPrice;
 
+                // Check if the user is an admin
+                var isAdmin = <?php echo json_encode($_SESSION["privilege"] === "admin"); ?>;
+                if (isAdmin) {
+                    addToCartButton.textContent = "Edit Product";
+                } else {
+                    addToCartButton.textContent = "Add to Cart";
+                }
+
                 // Add click event listener to the "Add to Cart" button
                 addToCartButton.addEventListener("click", function() {
+                if (isAdmin) {
+                    location.href = "/admin/manage";
+                } else {
                     <?php if (isset($_SESSION["user_id"])) { ?>
                         location.href = "/cart/addtoCart.php?product_id=" + productId;
                     <?php } else { ?>
                         alert("Please log in before adding to cart.");
                         location.href = "/login/";
                     <?php } ?>
+                }
                 });
 
                 // Display the modal

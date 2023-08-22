@@ -1,0 +1,129 @@
+version: "2.19" 
+services: 
+
+  webapp_insecure: 
+    build:
+      context: . 
+      dockerfile: php-image/dockerfile 
+    ports:
+      - "8000:80" 
+    depends_on:
+      - database_insecure 
+    volumes:
+      - ./insecure_websafe:/var/www/html
+    networks:
+      insecure_internal:
+        ipv4_address: "192.168.20.69"
+
+  database_insecure: 
+    image: mysql:latest
+    environment:
+      - MYSQL-DATABASE=websafe
+      - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
+      - MYSQL_USER=lottie 
+      - MYSQL_PASSWORD=Ad0r@ble
+    restart: unless-stopped
+    volumes:
+      - ./insecure_database:/var/lib/mysql
+    networks:
+      - insecure_internal
+
+  phpmyadmin_insecure:
+    image: phpmyadmin
+    ports:
+      - "8001:80"
+    environment:
+      - PMA_ARBITRARY=1 
+      - PMA_HOST=database_insecure 
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=w3bs@fe_ADmin 
+    networks:
+      - insecure_internal
+
+  server1_insecure: 
+    build:
+      context: . 
+      dockerfile: php-image/dockerfile 
+    ports:
+      - "8002:80"
+    depends_on:
+      - database_insecure
+    volumes:
+      - ./server1_nonsense:/var/www/html
+    networks:
+      insecure_internal:
+        ipv4_address: "192.168.20.22"
+
+  #########################################################
+  #########################################################
+  #########################################################
+  #########################################################
+  #########################################################
+
+  webapp_secure: 
+    build:
+      context: . 
+      dockerfile: php-image/dockerfile 
+    ports:
+      - "9000:80" 
+    depends_on:
+      - database_secure 
+    volumes:
+      - ./secure_websafe:/var/www/html
+    networks:
+      secure_internal:
+        ipv4_address: "192.168.40.69"
+
+  database_secure: 
+    image: mysql:latest
+    environment:
+      - MYSQL-DATABASE=websafe
+      - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
+      - MYSQL_USER=lottie 
+      - MYSQL_PASSWORD=Ad0r@ble
+    restart: unless-stopped
+    volumes:
+      - ./secure_database:/var/lib/mysql
+    networks:
+      - secure_internal
+
+  phpmyadmin_secure:
+    image: phpmyadmin
+    ports:
+      - "9001:80"
+    environment:
+      - PMA_ARBITRARY=1 
+      - PMA_HOST=database_secure 
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=w3bs@fe_ADmin 
+    networks:
+      - secure_internal
+
+  server1_secure: 
+    build:
+      context: . 
+      dockerfile: php-image/dockerfile 
+    ports:
+      - "9002:80" 
+    depends_on:
+      - database_secure
+    volumes:
+      - ./server1_nonsense:/var/www/html
+    networks:
+      secure_internal:
+        ipv4_address: "192.168.40.22"
+
+networks:
+  insecure_internal:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.20.0/24"
+
+  secure_internal:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.40.0/24" 

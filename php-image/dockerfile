@@ -1,0 +1,6 @@
+FROM php:8.2.4-apache
+
+# Update system core + Install mysqli
+RUN apt update
+RUN docker-php-ext-install mysqli pdo_mysql && docker-php-ext-enable mysqli
+

@@ -1,0 +1,29 @@
+websafe site as at 26 June 2023:
+> Created first version of the database
+> Made the basic html + stylings of shopping page
+> Made navbar and product cells adapt to window width changes
+> No features as of yet, products are hardcoded
+
+========================================================
+
+websafe site as at 27 June 2023:
+> Made html page into a php page
+> Created the CRUD functions for products
+    > (Only Create is working as of now)
+> Created a PHP script for adding products to cart (broken)
+> create "test" and "modal test" .css and .php pages for modal generation (broken)
+
+websafe SQL as at 27 June 2023:
+> New table, `user_cart`, to act as a shopping cart
+
+Current status: BROKEN
+
+========================================================
+
+websafe site as at 4 July 2023:
+> Implemented features that creates a cart function
+> Added a new search function
+> Added a new Login/Register page 
+> Finished all CRUD functions for products
+
+Current stats: Fixed and functional

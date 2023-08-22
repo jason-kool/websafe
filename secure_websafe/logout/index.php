@@ -2,7 +2,7 @@
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
 }
-
+session_start();
 include "../init-error.php";
 
 // Check if the user is logged in

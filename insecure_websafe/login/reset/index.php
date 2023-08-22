@@ -8,6 +8,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
+    $encoded_pass = base64_encode($password);
 
     $query = $con->prepare("SELECT * FROM `users` WHERE `email` = ?");
     $query->bind_param('s', $email);
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $query->get_result();
         if ($result->num_rows == 1) {
             $updateQuery = $con->prepare("UPDATE `users` SET `password` = ? WHERE `email` = ?");
-            $updateQuery->bind_param('ss', $password, $email);
+            $updateQuery->bind_param('ss', $encoded_pass, $email);
 
             if ($updateQuery->execute()) {
                 // Password updated successfully

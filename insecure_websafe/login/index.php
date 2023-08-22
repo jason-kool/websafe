@@ -9,7 +9,8 @@ $error = ""; // Variable to store the error message
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    $query = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$password'";
+    $encoded_pass = base64_encode($password);
+    $query = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$encoded_pass'";
     $result = mysqli_query($con, $query);
 
     if ($result) {

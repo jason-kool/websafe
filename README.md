@@ -1,6 +1,6 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `17 AUGUST 2023, 11:36pm`
-## VERSION: vC1.4
+## COMMIT DATE: `20 AUGUST 2023, 01:45am`
+## VERSION: vC1.5
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
@@ -49,6 +49,10 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.4 -> vC1.5
+> - Fixed a bug where Secured webpage wouldn't log out properly.
+> - Edited `INSECURE/register`, `INSECURE/login` and `INSECURE/login/reset` to store passwords in base64 encoding instead of plaintext.
+
 ## vC1.3 -> vC1.4
 > - Fixed database connection for `INSECURE_SERVER/*` and `SECURE_SERVER/*`.
 > - Installed functional SSRF-mitigation function for `SECURE/admin/main/index.php`.

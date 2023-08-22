@@ -26,8 +26,10 @@ if (isset($_POST["form_submit"])) {
     } elseif ($emailResult->num_rows > 0) {
         $error .= "Email already exists.";
     } else {
+        $encoded_pass = base64_encode($password);
+
         $query = $con->prepare("INSERT INTO `users` (`username`, `password`, `email`, `privilege`) VALUES (?, ?, ?, ?)");
-        $query->bind_param('ssss', $username, $password, $email, $privilege);
+        $query->bind_param('ssss', $username, $encoded_pass, $email, $privilege);
 
         if ($query->execute()) {
             header("Location: /login");

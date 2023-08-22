@@ -7,7 +7,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/sex.css">
-    <title>Document</title>
+    <title>Manage Users</title>
 </head>
 <body>
     <div id="navbar"><h1>Websafe external user management</h1></div>
@@ -15,8 +15,7 @@ session_start();
     <div class="admincontainer">
     
         <?php
-            // $con = mysqli_connect("localhost","root", "", "websafe");
-            $con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+            $con = mysqli_connect("insecure_database","Lottie", "Ad0r@ble", "websafe");
 
             if (!$con) {
                 die("Failed to connect " . mysqli_connect_errno());
@@ -49,11 +48,8 @@ session_start();
         ?>
 
         <br><br>
-        <!-- This is all formatted in the style of "products", change later to fit users instead -->
-        <!-- Create function for adding users to database (only need add and remove)-->
-
+        
         <form action="addUser.php" method="post">
-        <!-- <form action="test.php" method="post"> -->
             <table border="1" align=center>
                 <thead>
                     <tr>

@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="login_card">
             <h1>REGISTER</h1>
-            <form method="POST" action="./">
+            <form method="POST" action=".">
                 <input type="email" placeholder="Email" name="email" required>
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>

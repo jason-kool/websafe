@@ -9,7 +9,7 @@ if ($_SESSION["privilege"] != "admin"){
   header("Location: /");
 }
 
-include "../sql_con.php";
+include "../../sql_con.php";
 
 function getAllLogs()
 {

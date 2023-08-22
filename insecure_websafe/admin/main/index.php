@@ -24,7 +24,7 @@ if (!isset($_SESSION["user_id"])) {
     <div class="adminmain">
         <form action="" method="get">
             <select name="vuln" id="">
-                <option value="http://192.168.42.22/welcome.html">Internal Server Status</option>
+                <option value="http://192.168.20.22/welcome.html">Internal Server Status</option>
             </select>
             <button type="submit">Submit</button>
         </form>

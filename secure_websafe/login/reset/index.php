@@ -7,9 +7,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-include "../init-timeout.php";
-include "../init-error.php";
-include "../sql_con.php";
+include "../../init-timeout.php";
+include "../../init-error.php";
+include "../../sql_con.php";
 
 if (isset($_SESSION["user_id"])) {
     header("Location: index.php");

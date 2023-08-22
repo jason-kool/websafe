@@ -26,7 +26,6 @@ services: # The containers that we want to deploy
       - MYSQL-DATABASE=database_insecure.sql
     restart: unless-stopped
     volumes:
-      # - ./insecure_mysql:/var/lib/mysql
       # - ./insecure_database/mysql:/var/lib/mysql
       - ./insecure_database/init-scripts:/docker-entrypoint-initdb.d
     networks:
@@ -89,7 +88,6 @@ services: # The containers that we want to deploy
       - MYSQL_PASSWORD=Ad0r@ble
     restart: unless-stopped
     volumes:
-      # - ./secure_mysql:/var/lib/mysql
       # - ./secure_database/mysql:/var/lib/mysql
       - ./secure_database/init-scripts:/docker-entrypoint-initdb.d
     networks:

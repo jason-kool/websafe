@@ -62,7 +62,7 @@ function outbound_allowed($url) {
     <div class="adminmain">
         <form action="" method="get">
             <select name="vuln" id="">
-                <option value="http://192.168.42.22/welcome.html">Internal Server Status</option>
+                <option value="http://192.168.40.22/welcome.html">Internal Server Status</option>
             </select>
             <button type="submit">Submit</button>
         </form>
@@ -75,9 +75,14 @@ function outbound_allowed($url) {
             if (isset($_GET["vuln"])) {
 
                 echo "<code><span>";
+
+                if (outbound_allowed($_GET["vuln"])) {
+                    $request = file_get_contents($_GET["vuln"]);
+                    echo $request;
+                } else {
+                    echo "ERROR FETCHING PAGE";
+                }
             
-                $request = file_get_contents($_GET["vuln"]);
-                echo $request;
                 
                 echo "</span></code>";
             }

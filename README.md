@@ -1,25 +1,17 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `17 AUGUST 2023, 01:49am`
-## VERSION: vC1.3
+## COMMIT DATE: `17 AUGUST 2023, 11:36pm`
+## VERSION: vC1.4
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
 
 The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
 
-## TO DO LIST:
-- [ ] Fix whatever's breaking the external servers for both secure and insecure
-- [ ] Implement and test the SSRF mitigation function on secure/admin/main
-- [ ] Check whether or not session storage is cleared upon sessiontimeout
-
-
 ### Websafe site
 I did the thing where it makes things """""efficient""""" by turning the error reporting, session timeout and SQL connection codes into their own files so they can be imported on the fly. Never tested if it works seamlessly tho lmao\
-***SECURE SITE DOES NOT HAVE SSRF SECURITY MEASURES IN PLACE***
 
 ### External server
 The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao\
-***EXTERNAL SERVER FOR SECURE AND INSEUCRE ARE BOTH BROKEN***
 
 ## PORT MAPPING CHART
 ```
@@ -57,6 +49,13 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.3 -> vC1.4
+> - Fixed database connection for `INSECURE_SERVER/*` and `SECURE_SERVER/*`.
+> - Installed functional SSRF-mitigation function for `SECURE/admin/main/index.php`.
+> - Updated sessionTimeout function to clear session storage in secure site.
+> - Deleted `SECURE/register/deleteUser.php`.
+> - Fixed database import routing for `INSECURE/admin/logs/index.php`
+
 ## vC1.2 -> vC1.3
 > - Changed input field for the email in `INSECURE/register` from "email" to "text" type.
 > - Non-admin kickout check has been removed in `INSECURE/admin/main/index.php` and `INSECURE/admin/manage/index.php`.

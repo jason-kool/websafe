@@ -1,5 +1,4 @@
 <?php
-session_start();
 include "../init-timeout.php";
 include "../init-error.php";
 

@@ -1,13 +1,11 @@
 # WEBSAFE PROJECT
 ## COMMIT DATE: `13 AUGUST 2023, 12:27am`
-## VERSION: vC1.0FUCK
+## VERSION: vC1.1
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
 
-
-# THIS IS BROKEN
-## THEY CAN'T RESOLVE TO ACCESS THE DATABASE AND I NEED TO MANUALLY CHANGE THE $con VARIABLE FOR EVERYFUCKINGPAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+This is no longer broken, and automatically imports the sql dump to the database, so no prior setup using PHPmyadmin is needed.
 
 
 ### Websafe site
@@ -49,10 +47,15 @@ External Server: 192.168.40.22
 > 2) Go to the `php-image/` folder
 > 3) Run `docker build -t <image name>`
 > 4) Go out to the root folder
-> 5) To start, run `docker-compose up -d`
+> 5) To start, run `docker-compose up -d .`
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## v2.2C1.0 -> vC1.0
+> - Made it so that sql dumps for secure and insecure are automatically imported into the database upon container start
+> - Changed "lottie" to "Lottie" so nothing else would break because of one stupid inconsistency
+> - Disabled database consistency by commenting out the "mysql" volumn in the compose files (both secure and insecure variants)
+
 ## v2.2* -> v2.2C1.0
 > - I know this version convention is confusing but basically \
 > 2.2I1.0 + 2.2S1.0 = 2.2C1.0 \

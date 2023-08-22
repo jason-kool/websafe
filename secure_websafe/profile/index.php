@@ -21,7 +21,7 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: ../");
 }
 
-$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+$con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 
 // CWE-209: Generation of Error Message Containing Sensitive Information
 error_reporting(E_ERROR | E_PARSE);

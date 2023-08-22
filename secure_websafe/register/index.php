@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $response = json_decode($result);
         if ($response->success) {
-            $con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+            $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 
             if (!$con) {
                 die("Failed to connect: " . mysqli_connect_errno());

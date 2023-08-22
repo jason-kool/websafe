@@ -27,7 +27,7 @@ if(isset($_POST["form_submit"])) {
                 echo "
                     <script>
                         alert('The username that you have entered is already taken!');
-                        window.location.href='index.php'
+                        window.location.href='/'
                     </script>";
                     die();
             }
@@ -35,7 +35,7 @@ if(isset($_POST["form_submit"])) {
                 echo "
                     <script>
                         alert('The email that you have entered is already registered!');
-                        window.location.href='index.php'
+                        window.location.href='/'
                     </script>";
                     die();
             }
@@ -52,7 +52,7 @@ if(isset($_POST["form_submit"])) {
 
     if ($query->execute()) {
         echo "Query executed.";
-        echo "<script> window.location.href='index.php' </script>";
+        echo "<script> window.location.href='/' </script>";
     } else {
         echo "Error executing query.";
     }

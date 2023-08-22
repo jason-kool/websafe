@@ -19,11 +19,11 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: /");
 }
 
-$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+$con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 
 // CWE-209: Generation of Error Message Containing Sensitive Information
-// error_reporting(E_ERROR | E_PARSE);
-// ini_set('display_errors', 0);
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
 if (!$con) {
     die("Failed to connect " . mysqli_connect_errno());
 }
@@ -79,8 +79,6 @@ if (isset($_POST['UID'])) {
                 echo '</div>';
                 echo '<div class="checkout"><h1>Order Summary</h1><table border="0" class="lmao"><thead><tr><th><b></b></th><th class="lmao"><b></b></th><th><b></b></th></tr></thead><tbody>';
 
-                $totalQuantity = null;
-                $totalPrice = null;
                 foreach ($productArray as $product_row) {
                     $totalQuantity += $product_row['product_quantity']; // sum of number of all products in cart
                     $itemPrice = $product_row['price']; // price of each item

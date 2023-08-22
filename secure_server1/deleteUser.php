@@ -15,7 +15,7 @@
 
     if ($query->execute()) {
         $con->close();
-        header("location: ./index.php");
+        header("location: ./");
         header("location: ./");
     } else {
         echo "Error executing query";

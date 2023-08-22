@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION["user_id"])){
     header("Location: ../");
 }
-$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
 
 
 if (!$con) {

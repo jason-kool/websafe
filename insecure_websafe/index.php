@@ -17,7 +17,8 @@ session_start();
 
     <?php
 
-    $con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+    $con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
+
 
 
     if (!$con) {
@@ -29,7 +30,7 @@ session_start();
         global $con;
         $query = $con->prepare("SELECT * FROM `products`");
         // SELECT everything FROM a table called `products`
-
+    
         if ($query->execute()) {
             $query->bind_result($product_id, $name, $price, $picture, $description);
             $query->store_result();
@@ -121,7 +122,7 @@ session_start();
         // Add click event listeners to each cell
         var cells = document.getElementsByClassName("cell");
         for (var i = 0; i < cells.length; i++) {
-            cells[i].addEventListener("click", function() {
+            cells[i].addEventListener("click", function () {
                 // Get the product details from the clicked cell
                 var productName = this.querySelector("h2").textContent;
                 var productImage = this.querySelector("img").src;
@@ -136,7 +137,7 @@ session_start();
                 productPricePlaceholder.textContent = productPrice;
 
                 // Add click event listener to the "Add to Cart" button
-                addToCartButton.addEventListener("click", function() {
+                addToCartButton.addEventListener("click", function () {
                     location.href = "sessionCart.php?product_id=" + productId;
                 });
 
@@ -146,12 +147,12 @@ session_start();
         }
 
         // Close the modal when the user clicks on the close button
-        closeBtn.addEventListener("click", function() {
+        closeBtn.addEventListener("click", function () {
             modal.style.display = "none";
         });
 
         // Close the modal when the user clicks outside of it
-        window.addEventListener("click", function(event) {
+        window.addEventListener("click", function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }

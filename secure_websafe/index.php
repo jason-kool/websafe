@@ -20,6 +20,7 @@ if (isset($_COOKIE[$s_name])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,12 +29,12 @@ if (isset($_COOKIE[$s_name])) {
 </head>
 
 <body>
-    
-    <?php include "./navbar.php";?>
-    
+
+    <?php include "./navbar.php"; ?>
+
     <?php
 
-    $con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+    $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 
     // CWE-209: Generation of Error Message Containing Sensitive Information
     error_reporting(E_ERROR | E_PARSE);
@@ -42,68 +43,69 @@ if (isset($_COOKIE[$s_name])) {
         die("Failed to connect " . mysqli_connect_errno());
     }
 
-        function getAllProducts() {
-            global $con;
-            $query = $con->prepare("SELECT * FROM `products`");
-            // SELECT everything FROM a table called `products`
-
-            if ($query->execute()) {
-                $query->bind_result($product_id, $name, $price, $picture, $description);
-                $query->store_result();
-
-                while ($query->fetch()) {
-                    echo '<div class="cell" data-product-id="'.$product_id.'"  data-description="'.$description.'"><div class="product"><img src="./productimages/'.$picture.'" alt="Image of '.$name.'"><div class="product-details"><h2>'.$name.'</h2><p>$'.$price.'</p><br>';
-                    
-                    if (isset($_SESSION["user_id"])) {
-                        echo '<a href="/cart/addtoCart.php?product_id='.$product_id.'" class="cell-btn">Add to cart</a>';
-                    }
-
-                    echo '</div></div></div></div>';
-                    
-                }
-            } else {
-                echo "Error executing query.";
-            }
-        }
-
-
-        try {
-            if (isset($_POST["search_query"])) {
-                if ($_POST["search_query"] == null) {
-                    getAllProducts();
-                } else {
-
-                    $query = $con->prepare("SELECT * FROM `products` WHERE `name` LIKE CONCAT ('%', ?, '%')");
-                    $query->bind_param("s",$_POST["search_query"]);
-                    if ($query->execute()) {
-                        $query->bind_result($product_id,$name,$price,$picture,$description);
-                        $query->store_result();
+    function getAllProducts()
+    {
+        global $con;
+        $query = $con->prepare("SELECT * FROM `products`");
+        // SELECT everything FROM a table called `products`
     
-                        while ($query->fetch()) {
-                            echo '<div class="cell" data-product-id="'.$product_id.'"  data-description="'.$description.'"><div class="product"><img src="./productimages/'.$picture.'" alt="Image of '.$name.'"><div class="product-details"><h2>'.$name.'</h2><p>$'.$price.'</p><br>';
-                    
-                            if (isset($_SESSION["user_id"])) {
-                                echo '<a href="/cart/addtoCart.php?product_id='.$product_id.'" class="cell-btn">Add to cart</a>';
-                            }
-        
-                            echo '</div></div></div></div>';
-                        }
-                    } else {
-                        echo "Error executing query.";
-                    }
+        if ($query->execute()) {
+            $query->bind_result($product_id, $name, $price, $picture, $description);
+            $query->store_result();
+
+            while ($query->fetch()) {
+                echo '<div class="cell" data-product-id="' . $product_id . '"  data-description="' . $description . '"><div class="product"><img src="./productimages/' . $picture . '" alt="Image of ' . $name . '"><div class="product-details"><h2>' . $name . '</h2><p>$' . $price . '</p><br>';
+
+                if (isset($_SESSION["user_id"])) {
+                    echo '<a href="/cart/addtoCart.php?product_id=' . $product_id . '" class="cell-btn">Add to cart</a>';
                 }
-            } else {
-                throw new Exception("No searches made");
+
+                echo '</div></div></div></div>';
+
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            getAllProducts();
+        } else {
+            echo "Error executing query.";
         }
+    }
+
+
+    try {
+        if (isset($_POST["search_query"])) {
+            if ($_POST["search_query"] == null) {
+                getAllProducts();
+            } else {
+
+                $query = $con->prepare("SELECT * FROM `products` WHERE `name` LIKE CONCAT ('%', ?, '%')");
+                $query->bind_param("s", $_POST["search_query"]);
+                if ($query->execute()) {
+                    $query->bind_result($product_id, $name, $price, $picture, $description);
+                    $query->store_result();
+
+                    while ($query->fetch()) {
+                        echo '<div class="cell" data-product-id="' . $product_id . '"  data-description="' . $description . '"><div class="product"><img src="./productimages/' . $picture . '" alt="Image of ' . $name . '"><div class="product-details"><h2>' . $name . '</h2><p>$' . $price . '</p><br>';
+
+                        if (isset($_SESSION["user_id"])) {
+                            echo '<a href="/cart/addtoCart.php?product_id=' . $product_id . '" class="cell-btn">Add to cart</a>';
+                        }
+
+                        echo '</div></div></div></div>';
+                    }
+                } else {
+                    echo "Error executing query.";
+                }
+            }
+        } else {
+            throw new Exception("No searches made");
+        }
+    } catch (\Throwable $th) {
+        //throw $th;
+        getAllProducts();
+    }
 
 
     ?>
 
-<div id="myModal" class="modal">
+    <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="product-details">
@@ -150,9 +152,9 @@ if (isset($_COOKIE[$s_name])) {
                 productPricePlaceholder.textContent = productPrice;
 
                 // Add click event listener to the "Add to Cart" button
-            addToCartButton.addEventListener("click", function () {
+                addToCartButton.addEventListener("click", function () {
                     location.href = "sessionCart.php?product_id=" + productId;
-            });
+                });
 
                 // Display the modal
                 modal.style.display = "block";
@@ -173,4 +175,5 @@ if (isset($_COOKIE[$s_name])) {
     </script>
 
 </body>
+
 </html>

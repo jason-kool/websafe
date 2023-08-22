@@ -4,7 +4,7 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
 }
 
-$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
 
 // Check if the user is logged in
 if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {

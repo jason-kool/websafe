@@ -50,7 +50,7 @@ function create_product() {
     // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
-        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
+        $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
         if (!$con) {
             die("Error connecting to database: " .  mysqli_connect_errno());
         } 

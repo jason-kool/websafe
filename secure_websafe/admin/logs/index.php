@@ -28,7 +28,7 @@ if ($_SESSION["privilege"] != "admin"){
 error_reporting(E_ERROR | E_PARSE);
 ini_set('display_errors', 0);
 
-$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+$con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
 if (!$con) {
   die("Failed to connect: " . mysqli_connect_errno());
 }

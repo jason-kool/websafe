@@ -10,6 +10,38 @@ if ($_SESSION["privilege"] != "admin"){
     header("Location: /");
 }
 
+// Function to see if the URL is allowed or not
+function outbound_allowed($url) {
+    
+    if (empty($url)) {
+        return false;
+    } else {
+        $value = parse_url($url); // split the URL into sections of scheme/host/path
+    }
+
+    if (!empty($value["scheme"])) {
+        $scheme = $value["scheme"];
+    }
+    
+    if (!empty($value["host"])) {
+        $host = $value["host"];
+    }
+
+    if (!empty($value["path"])) {
+        $path = $value["path"];
+    }
+
+    if ($host != "192.168.40.22") {
+        return false;
+    }
+
+    if ($path != "/welcome.html") {
+        return false;
+    }
+
+    return true;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,14 +75,6 @@ if ($_SESSION["privilege"] != "admin"){
             if (isset($_GET["vuln"])) {
 
                 echo "<code><span>";
-
-                // $handle = fopen("../../../../../../../../etc/passwd","r","true");
-                // $handle = fopen("http://192.168.42.22/welcome.html","r","true");
-                // $handle = fopen($_GET["vuln"],"r","true");
-
-                // echo fread($handle, filesize($_GET["vuln"]));
-                // echo fread($handle, 2048);
-                // fclose($handle);
             
                 $request = file_get_contents($_GET["vuln"]);
                 echo $request;

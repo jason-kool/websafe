@@ -34,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $auditquery->bind_param('ssss', $logName, $auditRole, $date, $auditActivity);
                 if ($auditquery->execute()) {
                     $con->close();
-                    // echo "Audit log has been captured";
                     // Redirect to the homepage or any other authenticated page
                     echo "<script>window.location.href='/'</script>";
                 }
@@ -68,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="login_card">
             <h1>LOGIN</h1>
             <form method="POST" action=".">
-                <!-- <form method="POST" action="test.php"> -->
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Login" class="button" name="form_submit">
@@ -81,7 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ?>
         </div>
 
-        <!-- THIS LEADS TO THE INSECURE VERSION OF BOTH -->
         <div class="forgor">
             <span>Not Registered? <a href="/register">Register Here</a></span>
             <span><a href="/login/reset">Forgot Password?</a></span>

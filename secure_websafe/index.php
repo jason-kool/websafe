@@ -9,7 +9,7 @@ include "./init-error.php"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Websafe shop</title>
-    <link rel="stylesheet" type="text/css" href="./sex.css">
+    <link rel="stylesheet" type="text/css" href="./design.css">
 </head>
 
 <body>
@@ -18,12 +18,7 @@ include "./init-error.php"
 
     <?php
 
-    // include "./sql_con.php";
-    $con = mysqli_connect("secure_database", "Lottie", "Ad0r@ble", "websafe");
-
-    if (!$con) {
-        die("Failed to connect " . mysqli_connect_errno());
-    }
+    include "./sql_con.php";
 
     function getAllProducts()
     {
@@ -133,11 +128,6 @@ include "./init-error.php"
                 productImagePlaceholder.src = productImage;
                 productDescriptionPlaceholder.textContent = this.getAttribute("data-description");
                 productPricePlaceholder.textContent = productPrice;
-
-                // Add click event listener to the "Add to Cart" button
-                // addToCartButton.addEventListener("click", function() {
-                    // location.href = "sessionCart.php?product_id=" + productId;
-                // });
 
                 // Add click event listener to the "Add to Cart" button
                 addToCartButton.addEventListener("click", function() {

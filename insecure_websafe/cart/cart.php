@@ -1,8 +1,5 @@
 <?php
 session_start();
-// if (!isset($_SESSION["user_id"])) {
-//     header("Location: /");
-// }
 
 include "../sql_con.php";
 ?>

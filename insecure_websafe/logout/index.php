@@ -4,10 +4,11 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
 }
 
-$con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
-
 // Check if the user is logged in
 if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
+
+    include "../sql_con.php";
+
     $date = date('d-m-y h:i:s');
     $logName = $_SESSION["username"];
     $logRole = $_SESSION["privilege"];
@@ -33,6 +34,5 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
     window.location.href='/';
     </script>";
 }
-// header("Location: /");
 exit();
 ?>

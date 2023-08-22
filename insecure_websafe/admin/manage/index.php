@@ -3,9 +3,6 @@ session_start();
 if (!isset($_SESSION["user_id"])) {
   header("Location: /");
 }
-if ($_SESSION["privilege"] != "admin"){
-    header("Location: /");
-}
 
 
 function create_product() {
@@ -27,14 +24,10 @@ function create_product() {
     $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
     $newFileName = "product_" . preg_replace('/\s+/', '_', $productName) . "." . $fileExtension;
     $fileDestination = "../../productimages/" . $newFileName; // path to directory relative from current position
-    // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
-        // include "../sql_con.php";
-        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
-        if (!$con) {
-            die("Error connecting to database: " .  mysqli_connect_errno());
-        } 
+        include "../../sql_con.php";
+
 
         // if (isset($_POST["create_product"])) {
         if (isset($_POST["form_action"]) && $_POST["form_action"] == "create") {
@@ -66,11 +59,8 @@ function update_product() {
         
     }
 
-    // include "../sql_con.php";
-    $con = mysqli_connect("insecure_database", "Lottie", "Ad0r@ble", "websafe");
-    if (!$con) {
-        die("Error connecting to database: " . mysqli_connect_errno());
-    }
+    include "../../sql_con.php";
+
 
     // check if the product with the specified ID exists
     $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
@@ -159,7 +149,6 @@ function delete_product() {
     if (!isset($_GET["id"])) {
         $GLOBALS['$error'] = "ID must be specified";
     } else {
-        // $idToDelete = $_POST["id"];
         $idToDelete = $_GET["id"];
     
     
@@ -232,11 +221,7 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
     <div class="admincontainer">
 
         <?php
-            $con = mysqli_connect("database","root", "w3bs@fe_ADmin", "websafe");
-
-            if (!$con) {
-                die("Failed to connect " . mysqli_connect_errno());
-            }
+            include "../../sql_con.php";
 
             $query = $con->prepare("SELECT * FROM `products`");
             // SELECT everything FROM a table called `products`

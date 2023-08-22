@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Retrieve user data
-$userId = $_SESSION['user_id']; // Replace with the actual user ID
+$userId = $_SESSION['user_id']; 
 $userQuery = $con->prepare("SELECT `user_id`, `username`, `password`, `email`, `profilepicture` FROM `users` WHERE `user_id` = ?");
 $userQuery->bind_param('i', $userId);
 $userQuery->execute();

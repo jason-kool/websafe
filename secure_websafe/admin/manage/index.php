@@ -35,7 +35,6 @@ function create_product() {
     $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
     $newFileName = "product_" . preg_replace('/\s+/', '_', $productName) . "." . $fileExtension;
     $fileDestination = "../../productimages/" . $newFileName; // path to directory relative from current position
-    // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
         global $con;

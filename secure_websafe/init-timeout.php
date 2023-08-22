@@ -17,5 +17,4 @@ if (isset($_COOKIE[$s_name])) {
             </script>";
     }
 }
-
 ?>

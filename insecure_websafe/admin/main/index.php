@@ -4,12 +4,6 @@ session_start();
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
   }
-
-if ($_SESSION["privilege"] != "admin"){
-    header("Location: /");
-}
-
-
 ?>
 
 <!DOCTYPE html>

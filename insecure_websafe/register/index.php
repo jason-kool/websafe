@@ -61,7 +61,7 @@ if (isset($_POST["form_submit"])) {
         <div class="login_card">
             <h1>REGISTER</h1>
             <form method="POST" action="./">
-                <input type="email" placeholder="Email" name="email" required>
+                <input type="text" placeholder="Email" name="email" required>
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Register" class="button" name="form_submit">

@@ -1,11 +1,16 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `15 AUGUST 2023, 23:33pm`
-## VERSION: vC1.2
+## COMMIT DATE: `17 AUGUST 2023, 01:49am`
+## VERSION: vC1.3
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
 
 The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
+
+## TO DO LIST:
+- [ ] Fix whatever's breaking the external servers for both secure and insecure
+- [ ] Implement and test the SSRF mitigation function on secure/admin/main
+- [ ] Check whether or not session storage is cleared upon sessiontimeout
 
 
 ### Websafe site
@@ -13,7 +18,8 @@ I did the thing where it makes things """""efficient""""" by turning the error r
 ***SECURE SITE DOES NOT HAVE SSRF SECURITY MEASURES IN PLACE***
 
 ### External server
-The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao
+The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao\
+***EXTERNAL SERVER FOR SECURE AND INSEUCRE ARE BOTH BROKEN***
 
 ## PORT MAPPING CHART
 ```
@@ -51,6 +57,14 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.2 -> vC1.3
+> - Changed input field for the email in `INSECURE/register` from "email" to "text" type.
+> - Non-admin kickout check has been removed in `INSECURE/admin/main/index.php` and `INSECURE/admin/manage/index.php`.
+> - Updated pages that hardcoded the SQL connection instead of importing it.
+> - Changed "manage users" to "manage products" in the admin navbar.
+> - Cleaned up unnecessary comments in all pages.
+> - Added a function in `SECURE/admin/main/index.php` to mitigate SSRF, but haven't tested if it's working.
+
 ## vC1.2 -> vC1.2
 > - Made the **SQL con**, **error reporting** and **session timeout** functions into their own PHP pages, and replaced all the existing code on (almost) all pages to `include()` them. (Haven't testing if anything is broken tho)
 > - Changed Document Titles for all webpages so they actually reflect what the page is about instead of just "helpme" or "Document"

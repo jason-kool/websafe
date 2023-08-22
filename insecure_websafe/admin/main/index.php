@@ -1,10 +1,15 @@
 <?php
 session_start();
-// CWE-918: Server-Side Request Forgery 
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
   }
+
+if ($_SESSION["privilege"] != "admin"){
+    header("Location: /");
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -12,8 +17,8 @@ if (!isset($_SESSION["user_id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/design.css">
-    <title>Admin</title>
+    <link rel="stylesheet" href="/sex.css">
+    <title>Document</title>
 </head>
 <body>
     
@@ -22,11 +27,10 @@ if (!isset($_SESSION["user_id"])) {
     include "../adminbar.php";
     ?>
 
-
     <div class="adminmain">
         <form action="" method="get">
             <select name="vuln" id="">
-                <option value="http://192.168.20.22/welcome.html">Internal Server Status</option>
+                <option value="http://192.168.42.22/welcome.html">Internal Server Status</option>
             </select>
             <button type="submit">Submit</button>
         </form>

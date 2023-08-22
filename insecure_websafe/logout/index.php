@@ -1,15 +1,13 @@
 <?php
 session_start(); // Start the session
-
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../");
+    header("Location: ../index.php");
 }
+
+$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
 
 // Check if the user is logged in
 if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
-
-    include "../sql_con.php";
-
     $date = date('d-m-y h:i:s');
     $logName = $_SESSION["username"];
     $logRole = $_SESSION["privilege"];
@@ -30,8 +28,11 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
         // THIS COOKIE IS USED ONLY FOR /admin/manage AND NOWHERE ELSE
 
     }
-    echo "<script>sessionStorage.clear()</script>";
-    echo "<script>window.location.href='/'</script>";
+    echo "<script>
+    sessionStorage.clear();
+    window.location.href='/';
+    </script>";
 }
+// header("Location: /");
 exit();
 ?>

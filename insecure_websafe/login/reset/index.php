@@ -1,16 +1,17 @@
 <?php
 session_start();
-// CWE-640: Weak Password Recovery Mechanism for Forgotten Password
-include "../../sql_con.php";
+//non secure update password
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+
+if (!$con) {
+    die("Failed to connect: " . mysqli_connect_errno());
+}
 
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
-    // CWE-261: Weak Encoding for Password
-    // CWE-521: Weak Password Requirements
-    $encoded_pass = base64_encode($password);
 
     $query = $con->prepare("SELECT * FROM `users` WHERE `email` = ?");
     $query->bind_param('s', $email);
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $query->get_result();
         if ($result->num_rows == 1) {
             $updateQuery = $con->prepare("UPDATE `users` SET `password` = ? WHERE `email` = ?");
-            $updateQuery->bind_param('ss', $encoded_pass, $email);
+            $updateQuery->bind_param('ss', $password, $email);
 
             if ($updateQuery->execute()) {
                 // Password updated successfully
@@ -46,7 +47,7 @@ $con->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>
@@ -57,7 +58,7 @@ $con->close();
     <div class="container">
         <div class="login_card">
             <h1>RESET YOUR PASSWORD</h1>
-            <form method="POST" action=".">
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="email" placeholder="Email" name="email" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Reset Password" class="button" name="form_submit">

@@ -1,33 +1,48 @@
 <?php
-include "../init-timeout.php";
-include "../init-error.php";
-
-// CWE-284: Improper Access Control
+$timeout = 300;
+ini_set("session.gc_maxlifetime", $timeout);
+ini_set("session.cookie_lifetime", $timeout);
+session_start();
+$s_name = session_name();
+    if (isset($_COOKIE[$s_name])) {
+        setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
+    } else {
+        if (session_destroy()) {
+            echo "
+            <script>
+                alert('Sorry, you have been inactive for too long. Please log in again.');
+                window.location.href='login.php';
+            </script>";
+        }
+    }
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
 }
 
-include "../sql_con.php";
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+
+// CWE-209: Generation of Error Message Containing Sensitive Information
+// error_reporting(E_ERROR | E_PARSE);
+// ini_set('display_errors', 0);
+if (!$con) {
+    die("Failed to connect " . mysqli_connect_errno());
+}
 ?>
 
 <?php
+//CWE-284
 if (isset($_POST['UID'])) {
-
-    // CWE-315: Cleartext Storage of Sensitive Information in Cookies
+    // CWE-312 secure
     $user_id = $_POST["UID"];
     $ciphering = "AES-256-GCM";
     $iv_length = openssl_cipher_iv_length($ciphering);
     $encryption_key = $_SESSION['encryptionKey'];
     $options = OPENSSL_RAW_DATA;
     $encryption_iv = $_SESSION['encryptionIv'];
-    $tag = $_SESSION['authenticationTagID'];
-
+    $tag = $_SESSION['authenticationTag'];
     $decodedID = base64_decode($user_id);
     $decryptedID = openssl_decrypt($decodedID, $ciphering, $encryption_key, $options, $encryption_iv, $tag);
-    
-    // CWE-285: Improper Authorization
-    // makes sure that the user cannot access carts of other users
-    if ($decryptedID == $_SESSION["user_id"]) { 
+    if ($decryptedID == $_SESSION["user_id"]) { //CWE-285 makes sure that the user cannot access carts of other users
             $query = "SELECT product_quantity, cartproduct_id, name, price, picture FROM websafe.user_cart
             INNER JOIN websafe.products ON cartproduct_id = product_id
             INNER JOIN websafe.users ON cart_userid = user_id WHERE user_id = ?";          
@@ -64,6 +79,8 @@ if (isset($_POST['UID'])) {
                 echo '</div>';
                 echo '<div class="checkout"><h1>Order Summary</h1><table border="0" class="lmao"><thead><tr><th><b></b></th><th class="lmao"><b></b></th><th><b></b></th></tr></thead><tbody>';
 
+                $totalQuantity = null;
+                $totalPrice = null;
                 foreach ($productArray as $product_row) {
                     $totalQuantity += $product_row['product_quantity']; // sum of number of all products in cart
                     $itemPrice = $product_row['price']; // price of each item

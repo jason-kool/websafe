@@ -3,7 +3,11 @@ session_start();
 
 if (isset($_POST["form_submit"])) {
     $error = "";
-    include "../sql_con.php";
+    $con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+
+    if (!$con) {
+        die("Failed to connect: " . mysqli_connect_errno());
+    }
 
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -26,12 +30,8 @@ if (isset($_POST["form_submit"])) {
     } elseif ($emailResult->num_rows > 0) {
         $error .= "Email already exists.";
     } else {
-        // CWE-261: Weak Encoding for Password
-        // CWE-521: Weak Password Requirements
-        $encoded_pass = base64_encode($password);
-
         $query = $con->prepare("INSERT INTO `users` (`username`, `password`, `email`, `privilege`) VALUES (?, ?, ?, ?)");
-        $query->bind_param('ssss', $username, $encoded_pass, $email, $privilege);
+        $query->bind_param('ssss', $username, $password, $email, $privilege);
 
         if ($query->execute()) {
             header("Location: /login");
@@ -54,7 +54,7 @@ if (isset($_POST["form_submit"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>
@@ -65,7 +65,7 @@ if (isset($_POST["form_submit"])) {
         <div class="login_card">
             <h1>REGISTER</h1>
             <form method="POST" action="./">
-                <input type="text" placeholder="Email" name="email" required>
+                <input type="email" placeholder="Email" name="email" required>
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Register" class="button" name="form_submit">

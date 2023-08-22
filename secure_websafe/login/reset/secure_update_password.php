@@ -1,12 +1,30 @@
 <?php
-include "../../init-timeout.php";
-include "../../init-error.php";
+// CWE-613: Insufficient Session Expiration (Secure Version)
+$timeout = 300;
+ini_set("session.gc_maxlifetime", $timeout);
+ini_set("session.cookie_lifetime", $timeout);
+session_start();
+$s_name = session_name();
+if (isset($_COOKIE[$s_name])) {
+    setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
+} else {
+    if (session_destroy()) {
+        echo "
+            <script>
+                alert('Sorry, you have been inactive for too long. Please log in again.');
+                window.location.href='login.php';
+            </script>";
+    }
+}
 
 if (isset($_SESSION["user_id"])) {
     header("Location: index.php");
     exit();
 }
 
+// CWE-209: Generation of Error Message Containing Sensitive Information
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
 
 $error = "";
 
@@ -16,9 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirmPassword = $_POST["confirm_password"];
         if ($password === $confirmPassword) {
             $email = $_SESSION["update_email"];
-            include "../../sql_con.php";
+            $con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+            if (!$con) {
+                die("Failed to connect: " . mysqli_connect_errno());
+            }
             // CWE-20 Improper input validation
-            // CWE-521: Weak Password Requirements
             $passwordCheck = preg_match('/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $password);
             // CWE-261: Weak Encoding for Password (Secure Version)
             $timeTarget = 0.05;
@@ -60,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Password</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>

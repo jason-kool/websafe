@@ -1,18 +1,18 @@
 <?php
 session_start();
 
+$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
 
-include "../sql_con.php";
+if (!$con) {
+    die("Failed to connect: " . mysqli_connect_errno());
+}
 
 $error = ""; // Variable to store the error message
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    // CWE-261: Weak Encoding for Password
-    $encoded_pass = base64_encode($password);
-    // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
-    $query = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$encoded_pass'";
+    $query = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$password'";
     $result = mysqli_query($con, $query);
 
     if ($result) {
@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $auditquery->bind_param('ssss', $logName, $auditRole, $date, $auditActivity);
                 if ($auditquery->execute()) {
                     $con->close();
+                    // echo "Audit log has been captured";
                     // Redirect to the homepage or any other authenticated page
                     echo "<script>window.location.href='/'</script>";
                 }
@@ -59,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>
@@ -69,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="login_card">
             <h1>LOGIN</h1>
-            <form method="POST" action=".">
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <!-- <form method="POST" action="test.php"> -->
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <input type="submit" value="Login" class="button" name="form_submit">
@@ -82,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ?>
         </div>
 
+        <!-- THIS LEADS TO THE INSECURE VERSION OF BOTH -->
         <div class="forgor">
             <span>Not Registered? <a href="/register">Register Here</a></span>
             <span><a href="/login/reset">Forgot Password?</a></span>

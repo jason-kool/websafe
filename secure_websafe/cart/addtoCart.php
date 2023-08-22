@@ -3,8 +3,14 @@ session_start();
 if (!isset($_SESSION["user_id"])){
     header("Location: /");
 }
-include "../init-error.php";
-include "../sql_con.php";
+// CWE-209: Generation of Error Message Containing Sensitive Information
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+
+if (!$con) {
+    die("Failed to connect " . mysqli_connect_errno());
+}
 
 $userID = $_SESSION['user_id'];
 $productID = $_GET['product_id'];

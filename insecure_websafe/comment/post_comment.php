@@ -1,10 +1,15 @@
 <?php
 session_start();
 
-include "../sql_con.php";
+
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+
+if (!$con) {
+    die("Failed to connect " . mysqli_connect_errno());
+}
 
 if (isset($_POST["form_submit"])) {
-    // CWE-79: Improper Neutralization of Input During Web Page Generation 
+    // Page is loaded because of a form
     $comment = $_POST["comment_content"];
     $uid = $_SESSION["user_id"];
 

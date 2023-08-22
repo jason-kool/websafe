@@ -2,13 +2,19 @@
 session_start();
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
-}
-include "../init-error.php";
+  }
+  // CWE-209: Generation of Error Message Containing Sensitive Information
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
 
-include "../sql_con.php";
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
+
+if (!$con) {
+    die("Failed to connect " . mysqli_connect_errno());
+}
 
 if (isset($_POST["form_submit"])) {
-    // CWE-79: Improper Neutralization of Input During Web Page Generation
+    // Page is loaded because of a form
     $comment = $_POST["comment_content"];
     $uid = $_SESSION["user_id"];
     $specialCharComment = htmlspecialchars($comment);
@@ -22,10 +28,13 @@ if (isset($_POST["form_submit"])) {
     } else {
         echo "Error executing query.";
     }
-
+    
     $con->close();
+    
 } else {
     // Page is manually loaded without a form (unauthorized access)
     $con->close();
     header("Location: /comment");
 }
+
+?>

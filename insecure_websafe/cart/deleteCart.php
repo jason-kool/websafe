@@ -3,8 +3,12 @@ session_start();
 if (!isset($_SESSION["user_id"])){
     header("Location: ../");
 }
+$con = mysqli_connect("database","Lottie", "Ad0r@ble", "websafe");
 
-include "../sql_con.php";
+
+if (!$con) {
+    die("Failed to connect " . mysqli_connect_errno());
+}
 
 // increase product quantity from cart
 $productID = $_GET['product_id'];

@@ -8,8 +8,8 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Wall</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/sex.css">
 </head>
 
 <body>
@@ -25,7 +25,11 @@ session_start();
 
     <?php
     
-    include "../sql_con.php";
+    $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
+
+    if (!$con) {
+        die("Failed to connect " . mysqli_connect_errno());
+    }
 
     $query = $con->prepare('SELECT `c`.*, `u`.`username`, `u`.`profilepicture` FROM `users` u INNER JOIN `comments` c ON `c`.`user_id` = `u`.`user_id` ORDER BY c.comment_id DESC;');
 

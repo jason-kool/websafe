@@ -1,7 +1,31 @@
 <?php
-include "../init-timeout.php";
-include "../init-error.php";
-include "../sql_con.php";
+// CWE-613: Insufficient Session Expiration (Secure Version)
+$timeout = 300;
+ini_set("session.gc_maxlifetime", $timeout);
+ini_set("session.cookie_lifetime", $timeout);
+session_start();
+$s_name = session_name();
+if (isset($_COOKIE[$s_name])) {
+    setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
+} else {
+    if (session_destroy()) {
+        echo "
+            <script>
+                alert('Sorry, you have been inactive for too long. Please log in again.');
+                window.location.href='/';
+            </script>";
+    }
+}
+
+//CWE-209: Generation of Error Message Containing Sensitive Information
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
+
+$con = mysqli_connect("database", "Lottie", "Ad0r@ble", "websafe");
+
+if (!$con) {
+    die("Failed to connect: " . mysqli_connect_errno());
+}
 
 $error = ""; // Variable to store the error message
 
@@ -57,28 +81,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $encryption_key = random_bytes($iv_length); // Use random_bytes for a secure key
                 $encryption_iv = openssl_random_pseudo_bytes($iv_length); // Use openssl_random_pseudo_bytes for a secure IV
                 $options = OPENSSL_RAW_DATA;
-                
-                // encrypting the UID value
-                $encryption = openssl_encrypt($user["user_id"], $ciphering, $encryption_key, $options, $encryption_iv, $tagID); // Include the $tag variable to store the authentication tag
+                $encryption = openssl_encrypt($user["user_id"], $ciphering, $encryption_key, $options, $encryption_iv, $tag); // Include the $tag variable to store the authentication tag
                 $encryptedID = base64_encode($encryption);
-                
-                // encrypting the privilege value
-                $encryption_priv = openssl_encrypt($user["privilege"], $ciphering, $encryption_key, $options, $encryption_iv, $tagPRIV); 
-                $encrypted_priv = base64_encode($encryption_priv);
-
                 $_SESSION['encryptionKey'] = $encryption_key;
                 $_SESSION['encryptionIv'] = $encryption_iv;
-                $_SESSION['authenticationTagID'] = $tagID;
-                $_SESSION['authenticationTagPRIV'] = $tagPRIV;
+                $_SESSION['authenticationTag'] = $tag;
                 $_SESSION["user_id"] = $user["user_id"];
                 $_SESSION["username"] = $user["username"];
                 $_SESSION["privilege"] = $user["privilege"];
-                setcookie("privilege", $encrypted_priv, 0, "/");
-
-                $_SESSION["iwantdie"] = $encryptedID;
-                
                 echo '<script>sessionStorage.setItem("UID", "' . $encryptedID . '");</script>'; //stores encrypted UID of the user in the sessionstorage
-                
                 date_default_timezone_set('Singapore');
                 $date = date('y-m-d h:i:s');
                 $logName = $_SESSION['username'];
@@ -120,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/design.css">
+    <link rel="stylesheet" type="text/css" href="/sex.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
@@ -131,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="login_card">
             <h1>LOGIN</h1>
-            <form method="POST" action=".">
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <!-- <form method="POST" action="test.php"> -->
                 <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>

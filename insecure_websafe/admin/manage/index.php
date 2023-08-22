@@ -3,11 +3,10 @@ session_start();
 if (!isset($_SESSION["user_id"])) {
   header("Location: /");
 }
+if ($_SESSION["privilege"] != "admin"){
+    header("Location: /");
+}
 
-// CWE-862: Missing Authorization
-// {
-//     ?????????????
-// }
 
 function create_product() {
     // moving POST arguments into variables
@@ -23,16 +22,18 @@ function create_product() {
     }
 
     // storing POST image as file in local filesystem
-    // CWE-434: Unrestricted Upload of File with Dangerous Type
     $fileName = $productImage["name"];
     $fileTmpName = $productImage["tmp_name"];
     $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
     $newFileName = "product_" . preg_replace('/\s+/', '_', $productName) . "." . $fileExtension;
     $fileDestination = "../../productimages/" . $newFileName; // path to directory relative from current position
+    // ^^^^^ CHANGE THIS TO FIT NEW LOCAL DIRECTORY
     
     if (move_uploaded_file($fileTmpName, $fileDestination)) {
-        include "../../sql_con.php";
-
+        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
+        if (!$con) {
+            die("Error connecting to database: " .  mysqli_connect_errno());
+        } 
 
         // if (isset($_POST["create_product"])) {
         if (isset($_POST["form_action"]) && $_POST["form_action"] == "create") {
@@ -64,8 +65,10 @@ function update_product() {
         
     }
 
-    include "../../sql_con.php";
-
+    $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
+    if (!$con) {
+        die("Error connecting to database: " . mysqli_connect_errno());
+    }
 
     // check if the product with the specified ID exists
     $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
@@ -106,6 +109,7 @@ function update_product() {
             
             if (move_uploaded_file($fileTmpName, $fileDestination)) {
                 $updateNameQuery = $con->prepare("UPDATE `products` SET `picture` = ? WHERE `product_id` = ?");
+                // $updateNameQuery->bind_param('si', $productName, $idToUpdate);
                 $updateNameQuery->bind_param('si', $newFileName, $idToUpdate);
                 $updateNameQuery->execute();
                 $updateNameQuery->close();
@@ -153,10 +157,15 @@ function delete_product() {
     if (!isset($_GET["id"])) {
         $GLOBALS['$error'] = "ID must be specified";
     } else {
+        // $idToDelete = $_POST["id"];
         $idToDelete = $_GET["id"];
     
     
-        include "../sql_con.php";
+    
+        $con = mysqli_connect("database","Lottie","Ad0r@ble","websafe");
+        if (!$con) {
+            die("Error connecting to database: " . mysqli_connect_errno());
+        }
     
         $checkQuery = $con->prepare("SELECT * FROM `products` WHERE `product_id` = ?");
         $checkQuery->bind_param("i",$idToDelete);
@@ -204,8 +213,8 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/design.css">
-    <title>Manage Products</title>
+    <link rel="stylesheet" href="/sex.css">
+    <title>Document</title>
 </head>
 
 <body>
@@ -214,7 +223,6 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
         include "../../navbar.php";
         include "../adminbar.php";
 
-        // CWE-565: Reliance on Cookies without Validation and Integrity Checking​
         // checks for the privilege cookie given in the login page
         if ((!isset($_COOKIE["privilege"])) || ($_COOKIE["privilege"] != "admin")) {
             die("<div class='no_cart'>THIS IS FOR ADMINISTRATORS ONLY<br>Unauthorized or improper use of this system may result in administrative disciplinary action, civil charges/criminal penalties</div>");
@@ -226,7 +234,11 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
     <div class="admincontainer">
 
         <?php
-            include "../../sql_con.php";
+            $con = mysqli_connect("database","root", "w3bs@fe_ADmin", "websafe");
+
+            if (!$con) {
+                die("Failed to connect " . mysqli_connect_errno());
+            }
 
             $query = $con->prepare("SELECT * FROM `products`");
             // SELECT everything FROM a table called `products`

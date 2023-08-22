@@ -49,6 +49,7 @@ include "./sql_con.php";
                 getAllProducts();
             } else {
                 $search_query = $_POST["search_query"];
+                // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
                 $query = "SELECT * FROM `products` WHERE `name` LIKE '%$search_query%'";
                 $result = mysqli_query($con, $query);
 

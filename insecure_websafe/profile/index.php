@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $verificationQuery->fetch();
     $verificationQuery->close();
 
-    if ($setPassword == $oldPassword) {
+    if ($setPassword == base64_encode($oldPassword)) {
         // Check if the new username is unique
         $checkUsernameQuery = $con->prepare("SELECT * FROM `users` WHERE `username` = ? AND `user_id` != ?");
         $checkUsernameQuery->bind_param('si', $newUsername, $userId);
@@ -55,8 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             if ($newPassword !== "") {
+                // CWE-261: Weak Encoding for Password
+                // CWE-521: Weak Password Requirements
                 $updatePasswordQuery = $con->prepare("UPDATE `users` SET `password` = ? WHERE `user_id` = ?");
-                $updatePasswordQuery->bind_param('si', $newPassword, $userId);
+                $updatePasswordQuery->bind_param('si', base64_encode($newPassword), $userId);
                 $updatePasswordQuery->execute();
                 $updatePasswordQuery->close();
                 $updatePassword = "Password has been updated";
@@ -78,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Handle profile picture upload
+    // CWE-434: Unrestricted Upload of File with Dangerous Type
     $profilePicture = $_FILES["profile_picture"];
     if (!empty($profilePicture)) {
         $fileName = $profilePicture["name"];

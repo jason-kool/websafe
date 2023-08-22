@@ -4,6 +4,10 @@ if (!isset($_SESSION["user_id"])) {
   header("Location: /");
 }
 
+// CWE-862: Missing Authorization
+// {
+//     ?????????????
+// }
 
 function create_product() {
     // moving POST arguments into variables
@@ -19,6 +23,7 @@ function create_product() {
     }
 
     // storing POST image as file in local filesystem
+    // CWE-434: Unrestricted Upload of File with Dangerous Type
     $fileName = $productImage["name"];
     $fileTmpName = $productImage["tmp_name"];
     $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -101,7 +106,6 @@ function update_product() {
             
             if (move_uploaded_file($fileTmpName, $fileDestination)) {
                 $updateNameQuery = $con->prepare("UPDATE `products` SET `picture` = ? WHERE `product_id` = ?");
-                // $updateNameQuery->bind_param('si', $productName, $idToUpdate);
                 $updateNameQuery->bind_param('si', $newFileName, $idToUpdate);
                 $updateNameQuery->execute();
                 $updateNameQuery->close();
@@ -210,6 +214,7 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
         include "../../navbar.php";
         include "../adminbar.php";
 
+        // CWE-565: Reliance on Cookies without Validation and Integrity Checking​
         // checks for the privilege cookie given in the login page
         if ((!isset($_COOKIE["privilege"])) || ($_COOKIE["privilege"] != "admin")) {
             die("<div class='no_cart'>THIS IS FOR ADMINISTRATORS ONLY<br>Unauthorized or improper use of this system may result in administrative disciplinary action, civil charges/criminal penalties</div>");

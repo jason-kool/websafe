@@ -2,9 +2,11 @@
 include "../init-timeout.php";
 include "../init-error.php";
 
+// CWE-284: Improper Access Control; mitigation
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

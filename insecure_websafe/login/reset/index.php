@@ -1,6 +1,6 @@
 <?php
 session_start();
-//non secure update password
+// CWE-640: Weak Password Recovery Mechanism for Forgotten Password
 include "../../sql_con.php";
 
 $error = "";
@@ -8,6 +8,8 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
+    // CWE-261: Weak Encoding for Password
+    // CWE-521: Weak Password Requirements
     $encoded_pass = base64_encode($password);
 
     $query = $con->prepare("SELECT * FROM `users` WHERE `email` = ?");

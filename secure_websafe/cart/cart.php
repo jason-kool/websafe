@@ -1,6 +1,8 @@
 <?php
 include "../init-timeout.php";
 include "../init-error.php";
+
+// CWE-284: Improper Access Control
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
 }
@@ -9,9 +11,8 @@ include "../sql_con.php";
 ?>
 
 <?php
-//CWE-284
 if (isset($_POST['UID'])) {
-    // CWE-312 secure
+    // CWE-315: Cleartext Storage of Sensitive Information in Cookies
     $user_id = $_POST["UID"];
     $ciphering = "AES-256-GCM";
     $iv_length = openssl_cipher_iv_length($ciphering);
@@ -19,9 +20,13 @@ if (isset($_POST['UID'])) {
     $options = OPENSSL_RAW_DATA;
     $encryption_iv = $_SESSION['encryptionIv'];
     $tag = $_SESSION['authenticationTag'];
+
     $decodedID = base64_decode($user_id);
     $decryptedID = openssl_decrypt($decodedID, $ciphering, $encryption_key, $options, $encryption_iv, $tag);
-    if ($decryptedID == $_SESSION["user_id"]) { //CWE-285 makes sure that the user cannot access carts of other users
+    
+    // CWE-285: Improper Authorization
+    // makes sure that the user cannot access carts of other users
+    if ($decryptedID == $_SESSION["user_id"]) { 
             $query = "SELECT product_quantity, cartproduct_id, name, price, picture FROM websafe.user_cart
             INNER JOIN websafe.products ON cartproduct_id = product_id
             INNER JOIN websafe.users ON cart_userid = user_id WHERE user_id = ?";          

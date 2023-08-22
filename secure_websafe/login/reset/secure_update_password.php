@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = $_SESSION["update_email"];
             include "../../sql_con.php";
             // CWE-20 Improper input validation
+            // CWE-521: Weak Password Requirements
             $passwordCheck = preg_match('/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $password);
             // CWE-261: Weak Encoding for Password (Secure Version)
             $timeTarget = 0.05;

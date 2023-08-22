@@ -1,6 +1,7 @@
 <?php
 include "../../init-timeout.php";
 
+// CWE-862: Missing Authorization
 if (!isset($_SESSION["user_id"])) {
   header("Location: /");
 }
@@ -100,6 +101,7 @@ function update_product() {
                 $productName = $updatedName;
             }
 
+            // CWE-434: Unrestricted Upload of File with Dangerous Type
             $fileName = $newProductImage["name"];
             $fileTmpName = $newProductImage["tmp_name"];
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -216,14 +218,38 @@ if (isset($_GET["action"]) && $_GET["action"] = "delete") {
     <?php
         include "../../navbar.php";
         include "../adminbar.php";
+        
+        $ciphering = "AES-256-GCM";
+        $iv_length = openssl_cipher_iv_length($ciphering);
+        $encryption_key = $_SESSION['encryptionKey'];
+        $options = OPENSSL_RAW_DATA;
+        $encryption_iv = $_SESSION['encryptionIv'];
+        $tag = $_SESSION['authenticationTag'];
+        // CWE-315: Cleartext Storage of Sensitive Information in Cookies
+        $decoded_priv = base64_decode($_COOKIE["privilege"]);
+        $decrypted_priv = openssl_decrypt($decoded_priv, $ciphering, $encryption_key, $options, $encryption_iv, $tag);
+        
+        // CWE-565: Reliance on Cookies without Validation and Integrity Checking​
+        // cross checks the privilege cookies against the privilege object in PHP sessions array
+        if ($decrypted_priv != $_SESSION["privilege"]) {
 
-        // checks for the privilege cookie given in the login page
-        if ((!isset($_COOKIE["privilege"])) || ($_COOKIE["privilege"] != "admin")) {
-            die("<div class='no_cart'>THIS IS FOR ADMINISTRATORS ONLY<br>Unauthorized or improper use of this system may result in administrative disciplinary action, civil charges/criminal penalties</div>");
+            global $con;
+
+            $audit_username = $_SESSION["username"];
+            $audit_role = $_SESSION["privilege"];
+            $audit_date = date('y-m-d h:i:s');
+            $audit_activity = 'Cookie mismatch, value "'. $_COOKIE["privilege"] . '" against privilege ' . $audit_role . '".';
+
+            $auditquery = $con->prepare("INSERT INTO audit_trail (audit_username, audit_role, audit_datetime, audit_activity) VALUES (?,?,?,?)"); //audit logs of failing to authenticate
+
+            $auditquery->bind_param('ssss', $audit_username, $audit_role, $audit_date, $audit_activity);
+            if ($auditquery->execute()) {
+                $con->close();
+            }
+
+            die("<div class='no_cart'>YOUR COOKIES HAVE BEEN TAMPERED WITH<br>Your cookies do not match our records. This event will be logged.<br>Unauthorized or improper use of this system may result in administrative disciplinary action, civil charges/criminal penalties</div>");
         }
     ?>
-
-
 
     <div class="admincontainer">
 

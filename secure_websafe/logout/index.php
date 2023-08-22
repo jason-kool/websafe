@@ -27,6 +27,8 @@ if (isset($_SESSION["user_id"]) && isset($_SESSION["username"])) {
     sessionStorage.clear();
     window.location.href='/';
     </script>";
+
+    setcookie("privilege", "", 0, "/");
 }
 exit();
 ?>

@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $privilege = "user"; // Default privilege for a registered user
 
             // CWE-20 Improper input validation
+            // CWE-521: Weak Password Requirements
             $usernameCheck = preg_match('/^[a-z0-9_]+$/i', $username);
             $passwordCheck = preg_match('/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $password);
             $emailCheck = preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', $email);

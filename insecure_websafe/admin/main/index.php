@@ -1,5 +1,6 @@
 <?php
 session_start();
+// CWE-918: Server-Side Request Forgery 
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
@@ -20,6 +21,7 @@ if (!isset($_SESSION["user_id"])) {
     include "../../navbar.php";
     include "../adminbar.php";
     ?>
+
 
     <div class="adminmain">
         <form action="" method="get">

@@ -1,4 +1,5 @@
 <?php
+// CWE-640: Weak Password Recovery Mechanism for Forgotten Password
 require_once '../../PHPMailer/src/PHPMailer.php';
 require_once '../../PHPMailer/src/SMTP.php';
 require_once '../../PHPMailer/src/Exception.php';

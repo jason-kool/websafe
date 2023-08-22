@@ -4,7 +4,7 @@ session_start();
 include "../sql_con.php";
 
 if (isset($_POST["form_submit"])) {
-    // Page is loaded because of a form
+    // CWE-79: Improper Neutralization of Input During Web Page Generation 
     $comment = $_POST["comment_content"];
     $uid = $_SESSION["user_id"];
 

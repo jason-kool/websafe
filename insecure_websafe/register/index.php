@@ -26,6 +26,8 @@ if (isset($_POST["form_submit"])) {
     } elseif ($emailResult->num_rows > 0) {
         $error .= "Email already exists.";
     } else {
+        // CWE-261: Weak Encoding for Password
+        // CWE-521: Weak Password Requirements
         $encoded_pass = base64_encode($password);
 
         $query = $con->prepare("INSERT INTO `users` (`username`, `password`, `email`, `privilege`) VALUES (?, ?, ?, ?)");

@@ -1,6 +1,6 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `20 AUGUST 2023, 01:45am`
-## VERSION: vC1.5
+## COMMIT DATE: `20 AUGUST 2023, 11:37pm`
+## VERSION: vC1.6
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file. \
 I haven't done a thorough inspection of every file in both variants of the site, nor have I checked to see if the vulnerabilities we planned have been accounted for.
@@ -49,6 +49,15 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC1.5 -> vC1.6
+> - Edited `INSECURE/profile` to authenticate and store passwords in base64 encoding instead of plaintext.
+> - Edited the login function in `SECURE/login` to encrypt the user privilege
+> - Edited `SECURE/admin/manage` to decrypt the user privilege from `SECURE/login` and cross check the privilege cookie with the privilege object in the PHP sessions array
+> - Edited `SECURE/logout` and `SECURE/init_timeout` to clear the "privilege" cookie upon logout.
+> - Added comments to all pages in *INSECURE* site to indicate examples of CWE vulnerabilities (MISSING COMMENTS FOR `A09:*` AND `CWE-20: Improper Input Validation`)
+> - Added comments to pages in *SECURE* site to indicate examples of CWE mitigations (MISSING COMMENTS FOR `A09:*` AND `CWE-20: Improper Input Validation`)
+> - Fixed a bug where `SECURE/comment/post_comment.php` didn't submit a comment, and instead redirected users to the home page.
+
 ## vC1.4 -> vC1.5
 > - Fixed a bug where Secured webpage wouldn't log out properly.
 > - Edited `INSECURE/register`, `INSECURE/login` and `INSECURE/login/reset` to store passwords in base64 encoding instead of plaintext.

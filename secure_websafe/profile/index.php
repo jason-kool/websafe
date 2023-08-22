@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($emailResult->num_rows > 0) {
             $errorMsg = "Email already exists.";
         } else {
+            // CWE-521: Weak Password Requirements
             $usernameCheck = preg_match('/^[a-z0-9_]+$/i', $newUsername);
             $passwordCheck = preg_match('/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/', $newPassword);
             $emailCheck = preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', $newEmail);
@@ -95,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Handle profile picture upload
+        // CWE-434: Unrestricted Upload of File with Dangerous Type
         $profilePicture = $_FILES["profile_picture"];
         if (!empty($profilePicture)) {
             $fileName = $profilePicture["name"];

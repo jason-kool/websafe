@@ -10,6 +10,7 @@ if ($_SESSION["privilege"] != "admin"){
     header("Location: /");
 }
 
+// CWE-918: Server-Side Request Forgery 
 // Function to see if the URL is allowed or not
 function outbound_allowed($url) {
     

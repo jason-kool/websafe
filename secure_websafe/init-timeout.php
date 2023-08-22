@@ -10,6 +10,7 @@ if (isset($_COOKIE[$s_name])) {
     setcookie($s_name, $_COOKIE[$s_name], time() + $timeout, '/');
 } else {
     if (session_destroy()) {
+        setcookie("privilege", "", 0, "/");
         echo "
             <script>
                 sessionStorage.clear();

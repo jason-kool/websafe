@@ -9,7 +9,9 @@ $error = ""; // Variable to store the error message
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
+    // CWE-261: Weak Encoding for Password
     $encoded_pass = base64_encode($password);
+    // CWE-89: Improper Neutralization of Special Elements used in an SQL Command
     $query = "SELECT * FROM `users` WHERE `username` = '$username' AND `password` = '$encoded_pass'";
     $result = mysqli_query($con, $query);
 

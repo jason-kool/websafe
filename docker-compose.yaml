@@ -1,16 +1,14 @@
-version: "2.19" # Docker Compose version
-services: # The containers that we want to deploy
-
+version: "2.19"     # Docker Compose version
+services:           # The containers that we want to deploy
   
-  insecure_webapp: # name of the container
+  insecure_webapp:  # name of the container
     build:
-      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
-      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
-    # image: php:8.0-apache
+      context: .    # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
+      dockerfile: php-image/dockerfile  # relative path from the context to a directory containing the dockerfile
     ports:
-      - "8000:80" # Mapping port 8000 on our machine to access port 80 on the container
+      - "8000:80"   # Mapping port 8000 on our machine to access port 80 on the container
     depends_on:
-      - insecure_database # Makes it wait for the database container to start before running
+      - insecure_database               # Makes it wait for the database container to start before running
     volumes:
       - ./insecure_websafe:/var/www/html
     networks:
@@ -21,12 +19,12 @@ services: # The containers that we want to deploy
     image: mysql:latest
     environment:
       - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
-      - MYSQL_USER=Lottie # They said that this should live in an env variable???
+      - MYSQL_USER=Lottie
       - MYSQL_PASSWORD=Ad0r@ble
       - MYSQL-DATABASE=database_insecure.sql
     restart: unless-stopped
     volumes:
-      # - ./insecure_database/mysql:/var/lib/mysql
+      # - ./insecure_database/mysql:/var/lib/mysql # UNCOMMENT THIS LINE TO MAKE DATABASE PERSISTENT
       - ./insecure_database/init-scripts:/docker-entrypoint-initdb.d
     networks:
       - internal_insecure
@@ -36,25 +34,22 @@ services: # The containers that we want to deploy
     ports:
       - "8001:80"
     environment:
-      - PMA_ARBITRARY=1 # When true, allows us to specify our own preferred web service and DB
-      - PMA_HOST=insecure_database # Which container is hosting our MySQL Database?
+      - PMA_ARBITRARY=1 
+      - PMA_HOST=insecure_database
       - PMA_PORT=3306
-      - PMA_USER=root
-      - PMA_PASSWORD=w3bs@fe_ADmin 
-      # - PMA_USER=Lottie
-      # - PMA_PASSWORD=Ad0r@ble
+      # - PMA_USER=root                 # UNCOMMENT THESE LINES TO AUTOMATICALLY LOG IN TO DATABASE
+      # - PMA_PASSWORD=w3bs@fe_ADmin    # UNCOMMENT THESE LINES TO AUTOMATICALLY LOG IN TO DATABASE
     networks:
       - internal_insecure
 
-
-  insecure_server1: # name of the container
+  insecure_server1:
     build:
-      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
-      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+      context: . 
+      dockerfile: php-image/dockerfile
     ports:
-      - "8002:80" # Mapping port 8000 on our machine to access port 80 on the container
+      - "8002:80" 
     depends_on:
-      - insecure_database # Makes it wait for the database container to start before running
+      - insecure_database 
     volumes:
       - ./insecure_server1:/var/www/html
     networks:
@@ -63,16 +58,17 @@ services: # The containers that we want to deploy
 
 
   ##############################################################
+  ##############################################################
+  ##############################################################
 
-  webapp_secure: # name of the container
+  secure_webapp:
     build:
-      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
-      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
-    # image: php:8.0-apache
+      context: .
+      dockerfile: php-image/dockerfile
     ports:
-      - "9000:80" # Mapping port 8000 on our machine to access port 80 on the container
+      - "9000:80"
     depends_on:
-      - secure_database # Makes it wait for the database container to start before running
+      - secure_database
     volumes:
       - ./secure_websafe:/var/www/html
     networks:
@@ -84,11 +80,11 @@ services: # The containers that we want to deploy
     environment:
       - MYSQL-DATABASE=websafe
       - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
-      - MYSQL_USER=Lottie # They said that this should live in an env variable???
+      - MYSQL_USER=Lottie
       - MYSQL_PASSWORD=Ad0r@ble
     restart: unless-stopped
     volumes:
-      # - ./secure_database/mysql:/var/lib/mysql
+      # - ./secure_database/mysql:/var/lib/mysql # UNCOMMENT THIS LINE TO MAKE DATABASE PERSISTENT
       - ./secure_database/init-scripts:/docker-entrypoint-initdb.d
     networks:
       - internal_secure
@@ -98,25 +94,22 @@ services: # The containers that we want to deploy
     ports:
       - "9001:80"
     environment:
-      - PMA_ARBITRARY=1 # When true, allows us to specify our own preferred web service and DB
-      - PMA_HOST=secure_database # Which container is hosting our MySQL Database?
+      - PMA_ARBITRARY=1
+      - PMA_HOST=secure_database
       - PMA_PORT=3306
-      - PMA_USER=root
-      - PMA_PASSWORD=w3bs@fe_ADmin 
-      # - PMA_USER=Lottie
-      # - PMA_PASSWORD=Ad0r@ble
+      # - PMA_USER=root                 # UNCOMMENT THESE LINES TO AUTOMATICALLY LOG IN TO DATABASE
+      # - PMA_PASSWORD=w3bs@fe_ADmin    # UNCOMMENT THESE LINES TO AUTOMATICALLY LOG IN TO DATABASE
     networks:
       - internal_secure
 
-
-  secure_server1: # name of the container
+  secure_server1: 
     build:
-      context: . # defines either a path to a directory containing a Dockerfile, or a URL to a git repository
-      dockerfile: php-image/dockerfile # relative path from the context to a directory containing the dockerfile
+      context: . 
+      dockerfile: php-image/dockerfile 
     ports:
-      - "9002:80" # Mapping port 8000 on our machine to access port 80 on the container
+      - "9002:80" 
     depends_on:
-      - secure_database # Makes it wait for the database container to start before running
+      - secure_database 
     volumes:
       - ./secure_server1:/var/www/html
     networks:
@@ -124,13 +117,13 @@ services: # The containers that we want to deploy
         ipv4_address: "192.168.40.22"
 
 networks:
-  internal_secure:
-    ipam: # IP Address Management 
-      driver: default
-      config:
-        - subnet: "192.168.40.0/24" 
   internal_insecure:
-    ipam: # IP Address Management 
+    ipam: 
       driver: default
       config:
         - subnet: "192.168.20.0/24" 
+  internal_secure:
+    ipam: 
+      driver: default
+      config:
+        - subnet: "192.168.40.0/24" 

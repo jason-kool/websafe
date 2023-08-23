@@ -1,6 +1,6 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `22 AUGUST 2023, 13:49pm`
-## VERSION: vC2.0
+## COMMIT DATE: `23 AUGUST 2023, 11:53pm`
+## VERSION: vC2.1
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file.
 
@@ -49,6 +49,10 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC2.0 -> vC2.1
+> - Cleaned up the compose file.
+> - Changed container name from `webapp_secure` to `secure_webapp`.
+
 ## vC1.8 -> vC2.0
 > - Replaced product images for both secure and insecure site.
 > - Replaced the sql dump for both secure and insecure site.

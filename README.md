@@ -49,10 +49,6 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
-## vC2.0 -> vC2.1
-> - Cleaned up the compose file.
-> - Changed container name from `webapp_secure` to `secure_webapp`.
-
 ## vC1.8 -> vC2.0
 > - Replaced product images for both secure and insecure site.
 > - Replaced the sql dump for both secure and insecure site.

@@ -1,6 +1,6 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `23 AUGUST 2023, 11:53pm`
-## VERSION: vC2.1
+## COMMIT DATE: `22 AUGUST 2023, 13:49pm`
+## VERSION: vC2.0
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file.
 

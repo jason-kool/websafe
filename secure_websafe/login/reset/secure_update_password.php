@@ -66,8 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <?php include "../../navbar.php"; ?>
 
+    <h2 style="color:white" align="center">Update Password</h2>
     <div class="update_cell">
-        <h2 style="color:white" align="center">Update Password</h2>
         <?php
         if (!empty($error)) {
             echo '<p class="error">' . $error . '</p>';

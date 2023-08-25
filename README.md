@@ -1,6 +1,6 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `22 AUGUST 2023, 13:49pm`
-## VERSION: vC2.2
+## COMMIT DATE: `25 AUGUST 2023, 23:42pm`
+## VERSION: vC2.3
 
 This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file.
 
@@ -11,7 +11,7 @@ The compose file automatically imports a premade sql dump into each database, so
 The website should be done, and there are no forseeable changes to be made.
 
 ### External server
-The welcome page is still fucked. Like I kinda need help because I have no idea how to design it lmao
+External server is finally done and doesn't look ugly anymore
 
 ## PORT MAPPING CHART
 ```
@@ -49,6 +49,10 @@ External Server: 192.168.40.22
 > 6) To close, run `docker-compose down`
 
 # UPDATES MADE BETWEEN COMMITS
+## vC2.2 -> vC2.3
+> - Updated `INSECURE_SERVER/welcome.txt` and `SECURE_SERVER/welcome.txt`
+> - Cleaned up comments for `design.css` on secure and insecure sites
+
 ## vC2.1 -> vC2.2
 > - Updated `SECURE/login/reset/secure_update_password.php` and updated designs to go along with it
 > - Updated the logo for insecure and secure site

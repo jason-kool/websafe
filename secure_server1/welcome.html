@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <style>
-
-        .navigation {
-            background-color: antiquewhite;
-        }
-
-        .navigation > h1 {
-            margin: 0;
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f9;
+  }
+  .header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .widget {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #fff;
+  }
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+  }
+</style>
 </head>
-
 <body>
-    <div class="navigation"><h1>websafe</h1></div>
-    <h1>idk DESIGN THIS ANOTHER TIME</h1>
+  <div class="header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, Admin!</p>
+  </div>
+  <div class="container">
+    <div class="widget">
+      <h2>To-Do List</h2>
+      <ul>
+        <li>Review user registrations</li>
+        <li>Update product inventory</li>
+        <li>Approve pending orders</li>
+      </ul>
+    </div>
+    <div class="widget">
+      <h2>Message from Administrators</h2>
+      <p>Hello Admin,</p>
+      <p>We are pleased to inform you about the upcoming system maintenance scheduled for this weekend. Please make necessary preparations and notify your team members.</p>
+      <p>Best regards,<br>Admin Team</p>
+    </div>
+  </div>
+  <div class="footer">
+    <p>&copy; 2023 Admin Dashboard</p>
+  </div>
 </body>
-
 </html>

@@ -74,7 +74,8 @@ External Server: 192.168.40.22
 > - Removed the "code" design element from both stylesheets
 > - Adjusted the Compose file
 > - Updated this README file to not speak nonsense (kind of)
-> - Added better descriptions for this README file> - Added "credentials" section for this README file.
+> - Added better descriptions for this README file
+> - Added "credentials" section for this README file.
 
 ## vC2.2 -> vC2.3
 > - Updated `INSECURE_SERVER/welcome.txt` and `SECURE_SERVER/welcome.txt`

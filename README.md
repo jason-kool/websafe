@@ -1,28 +1,57 @@
 # WEBSAFE PROJECT
-## COMMIT DATE: `25 AUGUST 2023, 23:42pm`
-## VERSION: vC2.3
+## COMMIT DATE: `28 AUGUST 2023, 22:33pm`
+## VERSION: vC2.4
 
-This commit contains both the **secure** and **insecure** implementations of the site, controlled by a singular docker compose file.
+The Websafe Test Application deploys two web applications on the host machine; one vulnerable variant, and one secure variant.
 
+This test application focuses being lightweight, setup-free and easy-to-deploy through the use of Docker. 
 The compose file automatically imports a premade sql dump into each database, so no prior setup using PHPmyadmin is needed.
 
 
-### Websafe site
-The website should be done, and there are no forseeable changes to be made.
+### Websafe Site
+The Websafe Site is a shopping site with various function and pages, such as user creation, login/logout, a comments wall, a cart page, and an admin page for privileged accounts. 
 
-### External server
-External server is finally done and doesn't look ugly anymore
+### PhpMyAdmin
+PhpMyAdmin is a web interface designed for managing databases. In this project, this is provided for users to see what changes are being made in the database as they navigate the site, and also for debugging purposes.  
+
+### External Server
+The External Server simulates... an external server, lying on an internal network that the websafe site is in. This external server serves as a target and a demonstration of Server-Side Request Forgery.
+
+
+
+## INSTRUCTIONS FOR INSTALLATION
+> 1) Clone this entire repository into a folder
+> 2) Go to the `php-image/` folder
+> 3) Run `docker build -t <image name>`
+> 4) Go out to the root folder
+> 5) To start, run `docker-compose up -d .`
+> 6) To close, run `docker-compose down`
+
+## LOG IN CREDENTIALS
+```
+WEBSAFE SITE
+Username: Admin101
+Password: Admin101
+(Passwords are the same as the username for every default account)
+
+DATABASE USING PHPMYADMIN
+Database: insecure_database / secure_database
+Root username: root
+Root password: w3bs@fe_ADmin
+Username: Lottie
+Password: Ad0r@ble
+```
 
 ## PORT MAPPING CHART
 ```
 INSECURE VARIANT
 127.0.0.1:8000 > Websafe Web Application
-127.0.0.1:8001 > MyPHPAdmin SQL management page
+127.0.0.1:8001 > PhpMyAdmin SQL management page
 127.0.0.1:8002 > External Server
 
 SECURE VARIANT
 127.0.0.1:9000 > Websafe Web Application
-127.0.0.1:9001 > MyPHPAdmin SQL management page
+127.0.0.1:9001 > PhpMyAdmin SQL management page
 127.0.0.1:9002 > External Server
 ```
 
@@ -40,15 +69,13 @@ External Server: 192.168.40.22
 ```
 
 
-## INSTRUCTIONS FOR INSTALLATION
-> 1) Clone this entire repository into a folder
-> 2) Go to the `php-image/` folder
-> 3) Run `docker build -t <image name>`
-> 4) Go out to the root folder
-> 5) To start, run `docker-compose up -d .`
-> 6) To close, run `docker-compose down`
-
 # UPDATES MADE BETWEEN COMMITS
+## vC2.3 -> vC2.4
+> - Removed the "code" design element from both stylesheets
+> - Adjusted the Compose file
+> - Updated this README file to not speak nonsense (kind of)
+> - Added better descriptions for this README file> - Added "credentials" section for this README file.
+
 ## vC2.2 -> vC2.3
 > - Updated `INSECURE_SERVER/welcome.txt` and `SECURE_SERVER/welcome.txt`
 > - Cleaned up comments for `design.css` on secure and insecure sites

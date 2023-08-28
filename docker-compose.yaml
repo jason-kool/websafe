@@ -18,10 +18,10 @@ services:           # The containers that we want to deploy
   insecure_database: 
     image: mysql:latest
     environment:
+      - MYSQL-DATABASE=websafe
       - MYSQL_ROOT_PASSWORD=w3bs@fe_ADmin 
       - MYSQL_USER=Lottie
       - MYSQL_PASSWORD=Ad0r@ble
-      - MYSQL-DATABASE=database_insecure.sql
     restart: unless-stopped
     volumes:
       # - ./insecure_database/mysql:/var/lib/mysql # UNCOMMENT THIS LINE TO MAKE DATABASE PERSISTENT
